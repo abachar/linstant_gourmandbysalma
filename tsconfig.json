@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "paths": {
+      "@components": ["src/components"],
+      "@libs/*": ["src/libs/*"],
+      "@routes/*": ["src/routes/*"],
+    },
+  },
+}
