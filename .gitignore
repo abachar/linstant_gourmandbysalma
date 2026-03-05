@@ -1,4 +1,5 @@
 .DS_Store
+.env
 .tanstack/
 generated/
 node_modules/

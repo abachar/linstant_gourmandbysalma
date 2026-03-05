@@ -10,7 +10,7 @@
     "baseUrl": "./",
     "paths": {
       "@components": ["src/components"],
-      "@libs/*": ["src/libs/*"],
+      "@shared/*": ["src/shared/*"],
       "@routes/*": ["src/routes/*"],
     },
   },
