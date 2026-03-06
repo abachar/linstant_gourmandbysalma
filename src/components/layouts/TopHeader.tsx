@@ -1,4 +1,5 @@
 import type { Component, JSXElement } from "solid-js";
+import salmaImg from '@assets/images/salma.jpeg';
 
 export interface TopHeaderProps {
   title: string;
@@ -9,13 +10,9 @@ export const TopHeader: Component<TopHeaderProps> = ({ title, action }) => (
   <header class="sticky top-0 z-40 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-border-dark">
     <div class="flex items-center p-4 pb-3 justify-between">
       <div class="flex size-10 shrink-0 items-center overflow-hidden rounded-full border-2 border-primary">
-        <div
-          class="bg-center bg-no-repeat aspect-square bg-cover size-full"
-          style={{
-            "background-image":
-              "https://lh3.googleusercontent.com/aida-public/AB6AXuB4jfO98iEdq7NS2sQSEjmzC41ZLe_ut7Pda1QHHsWTJ5PPUqz1JthAE9-80jbWV8MJtEXbgJndKyDwInrpUtDCiZgG06sExKBBeYZjoIJO80rvuNS0Htw20l9Qj0Kva9xWe13fxbkpS2LTYQt61_sfBshiXUvlDKudwbsGjUtSbvzAK0sU1E-r6jaeyC79r8mPOGogTAmoEf_P8OBiVOUXPlYRkBJ9s9Xtp0HsXhyiDMWhyao7LyUj4HkQCu145heTK8rPSE64cgC8",
-          }}
-        />
+        <div class="bg-center bg-no-repeat aspect-square bg-cover size-full">
+          <img src={salmaImg} alt="Salma" />
+        </div>
       </div>
       <div class="flex flex-col flex-1 px-3">
         <h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">

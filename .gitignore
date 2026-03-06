@@ -1,6 +1,6 @@
 .DS_Store
 .env
 .tanstack/
-generated/
+_/
 node_modules/
 routeTree.gen.ts

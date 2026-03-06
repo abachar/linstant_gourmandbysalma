@@ -1,14 +1,17 @@
+import { DashboardPage, getDashboardFn } from "@features/dashboard";
 import { createFileRoute } from "@tanstack/solid-router";
-import { PageLayout } from "@components";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { z } from "zod";
 
 export const Route = createFileRoute("/")({
-  component: RouteComponent,
+	validateSearch: zodValidator(z.object({ month: z.string().default("") })),
+	loaderDeps: ({ search: { month } }) => ({ month }),
+	loader: ({ deps }) => getDashboardFn({ data: { month: deps.month } }),
+	component: RouteComponent,
 });
 
 function RouteComponent() {
-  return (
-    <PageLayout title="Bienvenue, Salma !">
-      <div>Hello "/dashboard/"!</div>
-    </PageLayout>
-  );
+	const data = Route.useLoaderData();
+
+	return <DashboardPage {...data()} />;
 }

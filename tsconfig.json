@@ -1,17 +1,19 @@
 {
-  "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "moduleResolution": "Bundler",
-    "module": "ESNext",
-    "target": "ES2022",
-    "skipLibCheck": true,
-    "strictNullChecks": true,
-    "baseUrl": "./",
-    "paths": {
-      "@components": ["src/components"],
-      "@shared/*": ["src/shared/*"],
-      "@routes/*": ["src/routes/*"],
-    },
-  },
+	"compilerOptions": {
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"moduleResolution": "Bundler",
+		"module": "ESNext",
+		"target": "ES2022",
+		"skipLibCheck": true,
+		"strictNullChecks": true,
+		"baseUrl": "./",
+		"paths": {
+			"@assets/*": ["src/assets/*"],
+			"@common/*": ["src/common/*"],
+			"@components/*": ["src/components/*"],
+			"@db/*": ["src/db/*"],
+			"@features/*": ["src/features/*"]
+		}
+	}
 }
