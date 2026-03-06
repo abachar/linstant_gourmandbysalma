@@ -12,9 +12,5 @@ export const Route = createFileRoute("/sales/")({
 
 function RouteComponent() {
   const data = Route.useLoaderData();
-  const filter = Route.useSearch({
-    select: (search) => search.filter,
-  });
-
-  return <SaleListPage sales={data()} selectedFilter={filter()} />;
+  return <SaleListPage {...data()} />;
 }

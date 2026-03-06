@@ -2,6 +2,10 @@ import { createServerFn } from "@tanstack/solid-start";
 import { startOfMonth, endOfMonth, addDays, subDays, startOfDay, endOfDay, addYears } from 'date-fns';
 import { getSales } from "./api.server";
 
+function validFilter(filter: string) {
+  return ['upcoming', 'month', 'past', 'all'].includes(filter) ? filter : 'upcoming';
+}
+
 // 'upcoming' | 'month' | 'past' | 'all'
 function getSaleInterval(filter: string): [Date, Date] {
   const now = new Date();
@@ -21,8 +25,12 @@ function getSaleInterval(filter: string): [Date, Date] {
 export const getSalesFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { filter: string }) => data)
   .handler(async ({ data }) => {
-    const [from, to] = getSaleInterval(data.filter);
-    return getSales(from, to);
+    const selectedFilter = validFilter(data.filter);
+    const [from, to] = getSaleInterval(selectedFilter);
+    return {
+      selectedFilter,
+      sales: await getSales(from, to)
+    };
 	});
 
-export type GetSalesReturn = Awaited<ReturnType<typeof getSales>>;
+export type GetSalesReturn = Awaited<ReturnType<typeof getSalesFn>>;

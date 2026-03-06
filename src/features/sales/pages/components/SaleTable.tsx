@@ -3,7 +3,7 @@ import { Component } from "solid-js";
 import { GetSalesReturn } from "../../api.functions";
 import { SaleTableRow } from "./SaleTableRow";
 
-export const SaleTable: Component<{ sales: GetSalesReturn}> = ({sales}) => {
+export const SaleTable: Component<GetSalesReturn> = ({sales}) => {
   return (
     sales.length === 0 ? (
         <EmptyState
