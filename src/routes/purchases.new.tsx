@@ -1,9 +1,10 @@
-import { createFileRoute } from '@tanstack/solid-router'
+import { PurchaseCreatePage } from "@features/purchases";
+import { createFileRoute } from "@tanstack/solid-router";
 
-export const Route = createFileRoute('/purchases/new')({
+export const Route = createFileRoute("/purchases/new")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/purchases/new"!</div>
+  return <PurchaseCreatePage />;
 }
