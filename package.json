@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "start": "node dist/server/server.js"
   },
   "keywords": [],
   "author": "",

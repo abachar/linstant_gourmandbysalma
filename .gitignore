@@ -1,7 +1,9 @@
 .DS_Store
 .env
+.env.production
 .tanstack/
 _/
 node_modules/
+dist/
 routeTree.gen.ts
 migrations/data/
