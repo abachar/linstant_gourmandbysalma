@@ -2,8 +2,7 @@ import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { useServerFn } from "@tanstack/solid-start";
 import { Component, For } from "solid-js";
 import { getDaySalesFn } from "../../api.functions";
-import { amount } from "@common/format";
-import { datetimeLong } from "_/with-react/src/lib/formatters";
+import { amount, datetimeLong } from "@common/format";
 import { Link } from "@tanstack/solid-router";
 
 export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = ({ date, onClose }) => {
