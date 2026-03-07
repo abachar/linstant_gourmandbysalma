@@ -48,3 +48,7 @@ export async function updatePurchase(data: { id: string; date: string; amount: s
 		})
 		.where(eq(purchases.id, data.id));
 }
+
+export async function deletePurchase(id: string) {
+	await db.delete(purchases).where(eq(purchases.id, id));
+}
