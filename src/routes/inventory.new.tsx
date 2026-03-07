@@ -1,3 +1,4 @@
+import { InventoryCreatePage } from "@features/inventory";
 import { createFileRoute } from "@tanstack/solid-router";
 
 export const Route = createFileRoute("/inventory/new")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/inventory/new")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/inventory/new"!</div>;
+  return <InventoryCreatePage />;
 }
