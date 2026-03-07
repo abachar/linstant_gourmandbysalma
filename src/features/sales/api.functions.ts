@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { startOfMonth, endOfMonth, addDays, subDays, startOfDay, endOfDay, addYears } from 'date-fns';
-import { getSales, getOneSaleById } from "./api.server";
+import { getSales, getOneSaleById, createSale, updateSale } from "./api.server";
 
 function validFilter(filter: string) {
   return ['upcoming', 'month', 'past', 'all'].includes(filter) ? filter : 'upcoming';
@@ -41,3 +41,32 @@ export const getOneSaleByIdFn = createServerFn({ method: "GET" })
 	});
 
 export type GetOneSaleByIdReturn = Awaited<ReturnType<typeof getOneSaleByIdFn>>;
+
+export const createSaleFn = createServerFn({ method: "POST" })
+  .inputValidator((data: {
+    clientName: string;
+    deliveryDatetime: string;
+    deliveryAddress?: string;
+    description?: string;
+    amount: string;
+    deposit: string;
+    depositPaymentMethod: string;
+    remaining: string;
+    remainingPaymentMethod: string;
+  }) => data)
+  .handler(async ({ data }) => createSale(data));
+
+export const updateSaleFn = createServerFn({ method: "POST" })
+  .inputValidator((data: {
+    id: string;
+    clientName: string;
+    deliveryDatetime: string;
+    deliveryAddress?: string;
+    description?: string;
+    amount: string;
+    deposit: string;
+    depositPaymentMethod: string;
+    remaining: string;
+    remainingPaymentMethod: string;
+  }) => data)
+  .handler(async ({ data }) => updateSale(data));

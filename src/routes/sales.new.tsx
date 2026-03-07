@@ -1,3 +1,4 @@
+import { SaleCreatePage } from "@features/sales";
 import { createFileRoute } from "@tanstack/solid-router";
 
 export const Route = createFileRoute("/sales/new")({
@@ -5,5 +6,5 @@ export const Route = createFileRoute("/sales/new")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/sales/new"!</div>;
+  return <SaleCreatePage />;
 }
