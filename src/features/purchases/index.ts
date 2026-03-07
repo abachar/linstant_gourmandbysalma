@@ -1,5 +1,11 @@
-export { getPurchasesFn, getPurchaseByIdFn, createPurchaseFn, updatePurchaseFn, deletePurchaseFn } from "./api.functions";
-export { PurchaseListPage } from "./pages/PurchaseListPage";
+export {
+	createPurchaseFn,
+	deletePurchaseFn,
+	getPurchaseByIdFn,
+	getPurchasesFn,
+	updatePurchaseFn,
+} from "./api.functions";
 export { PurchaseCreatePage } from "./pages/PurchaseCreatePage";
 export { PurchaseEditPage } from "./pages/PurchaseEditPage";
+export { PurchaseListPage } from "./pages/PurchaseListPage";
 export { PurchaseShowPage } from "./pages/PurchaseShowPage";

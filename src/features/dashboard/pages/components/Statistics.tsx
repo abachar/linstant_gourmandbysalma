@@ -1,6 +1,6 @@
-import { Component } from "solid-js";
-import type { GetDashboardReturn } from "../../api.functions";
 import { amount } from "@common/format";
+import type { Component } from "solid-js";
+import type { GetDashboardReturn } from "../../api.functions";
 
 const StatisticCard: Component<{ title: string; monthValue: number; yearValue: number }> = ({
 	title,

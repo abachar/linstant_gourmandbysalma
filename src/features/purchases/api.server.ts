@@ -1,11 +1,8 @@
-import { desc, eq } from "drizzle-orm";
 import { db, purchases } from "@common/db";
+import { desc, eq } from "drizzle-orm";
 
 export async function getPurchases() {
-	const result = await db
-		.select()
-		.from(purchases)
-		.orderBy(desc(purchases.date));
+	const result = await db.select().from(purchases).orderBy(desc(purchases.date));
 
 	return result.map((s) => ({
 		id: s.id,
@@ -16,11 +13,7 @@ export async function getPurchases() {
 }
 
 export async function getPurchaseById(id: string) {
-	const [purchase] = await db
-		.select()
-		.from(purchases)
-		.where(eq(purchases.id, id))
-		.limit(1);
+	const [purchase] = await db.select().from(purchases).where(eq(purchases.id, id)).limit(1);
 
 	return purchase;
 }

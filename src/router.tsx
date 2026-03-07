@@ -1,8 +1,8 @@
+import { DefaultErrorComponent, DefaultNotFoundComponent } from "@components/defaults";
 import { QueryClient } from "@tanstack/solid-query";
 import { createRouter } from "@tanstack/solid-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/solid-router-ssr-query";
 import { routeTree } from "./routeTree.gen";
-import { DefaultErrorComponent, DefaultNotFoundComponent } from "@components/defaults";
 
 export function getRouter() {
 	const queryClient = new QueryClient();

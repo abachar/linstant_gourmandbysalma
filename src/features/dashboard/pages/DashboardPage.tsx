@@ -1,7 +1,7 @@
 import { PageLayout } from "@components/layouts";
-import { createSignal, Show, type Component } from "solid-js";
-import { Calendar, Statistics, DaySalesDialog } from "./components";
-import { GetDashboardReturn } from "../api.functions";
+import { type Component, createSignal, Show } from "solid-js";
+import type { GetDashboardReturn } from "../api.functions";
+import { Calendar, DaySalesDialog, Statistics } from "./components";
 
 export const DashboardPage: Component<GetDashboardReturn> = (props) => {
 	const [selectedDate, setSelectedDate] = createSignal<string>("");

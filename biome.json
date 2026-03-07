@@ -1,16 +1,12 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false,
-		"ignore": ["src/routeTree.gen.ts", "_/**", ".tanstack/**", "node_modules/**"]
+		"ignoreUnknown": false
 	},
 	"formatter": {
 		"enabled": true,

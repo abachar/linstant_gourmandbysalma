@@ -2,6 +2,7 @@
 .env
 .env.production
 .tanstack/
+.claude/
 _/
 node_modules/
 dist/

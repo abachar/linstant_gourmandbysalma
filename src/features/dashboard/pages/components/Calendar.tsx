@@ -1,7 +1,7 @@
 import { DAYS_OF_WEEK } from "@common/format";
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
-import { GetDashboardReturn } from "../../api.functions";
+import type { GetDashboardReturn } from "../../api.functions";
 
 type CalendarProps = GetDashboardReturn & {
 	onSelectDate: (date: string) => void;
