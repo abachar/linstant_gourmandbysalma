@@ -8,7 +8,7 @@
 		"build": "vite build",
 		"lint": "biome check .",
 		"test": "vitest run",
-		"start": "node dist/server/server.js"
+		"start": "pnpx srvx --prod -s ../client dist/server/server.js"
 	},
 	"keywords": [],
 	"author": "",
