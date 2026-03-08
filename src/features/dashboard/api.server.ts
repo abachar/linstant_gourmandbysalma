@@ -39,18 +39,19 @@ async function getMonthSales(d: Date) {
 
 	const result = await db
 		.select({
-			day: sql<string>`extract(day from ${sales.deliveryDatetime})`,
+			date: sql<string>`to_char(${sales.deliveryDatetime}, 'YYYY-MM-DD')`,
 			count: sql<number>`count(*)`,
 		})
 		.from(sales)
 		.where(between(sales.deliveryDatetime, start, end))
-		.groupBy(sql`extract(day from ${sales.deliveryDatetime})`)
-		.orderBy(sql`extract(day from ${sales.deliveryDatetime})`);
+		.groupBy(sql`to_char(${sales.deliveryDatetime}, 'YYYY-MM-DD')`)
+		.orderBy(sql`to_char(${sales.deliveryDatetime}, 'YYYY-MM-DD')`);
 
 	return eachDayOfInterval({ start, end }).map((date) => {
-		const sale = result.find((r) => r.day === format(date, "dd"));
+		const dateStr = format(date, "yyyy-MM-dd");
+		const sale = result.find((r) => r.date === dateStr);
 		return {
-			date: format(date, "yyyy-MM-dd"),
+			date: dateStr,
 			day: format(date, "dd"),
 			count: sale?.count ?? 0,
 			inCurrentMonth: format(date, "MM") === format(d, "MM"),

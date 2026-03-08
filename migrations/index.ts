@@ -25,7 +25,9 @@ function mapPaymentMethod(value: string): string {
 // ---------------------------------------------------------------------------
 
 async function seedInventory() {
-	const records = parseCSV("inventory_rows.csv");
+	const records = parseCSV<{ id: string; product_name: string; quantity: string; created_at: string }>(
+		"inventory_rows.csv",
+	);
 
 	for (const r of records) {
 		await db.insert(inventory).values({
@@ -40,7 +42,9 @@ async function seedInventory() {
 }
 
 async function seedPurchases() {
-	const records = parseCSV("purchases_rows.csv");
+	const records = parseCSV<{ id: string; date: string; amount: string; description: string; created_at: string }>(
+		"purchases_rows.csv",
+	);
 
 	for (const r of records) {
 		await db.insert(purchases).values({
@@ -56,7 +60,17 @@ async function seedPurchases() {
 }
 
 async function seedSales() {
-	const records = parseCSV("sales_rows.csv");
+	const records = parseCSV<{
+		id: string;
+		clientName: string;
+		deliveryDateTime: string;
+		deliveryAddress: string;
+		description: string;
+		amount: string;
+		deposit: string;
+		depositPaymentMethod: string;
+		remaining: string;
+	}>("sales_rows.csv");
 
 	for (const r of records) {
 		await db.insert(sales).values({
