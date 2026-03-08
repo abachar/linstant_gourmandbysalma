@@ -50,7 +50,7 @@ export const Calendar: Component<CalendarProps> = ({ onSelectDate, ...props }) =
 				>
 					{day}
 					<span class="flex gap-0.5 absolute bottom-1">
-						{Array.from({ length: count }, (_, i) => i).map((i) => (
+						{Array.from({ length: count }, (_, i) => i).map(() => (
 							<span class="size-1 rounded-full bg-primary" />
 						))}
 					</span>

@@ -2,7 +2,6 @@ import { type Component, For } from "solid-js";
 import { createStore } from "solid-js/store";
 
 const PAYMENT_METHODS = ["Bancaire", "Espèces"] as const;
-type PaymentMethod = (typeof PAYMENT_METHODS)[number];
 
 export interface SaleFormValues {
 	clientName: string;

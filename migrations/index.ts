@@ -6,7 +6,7 @@ import { db, inventory, purchases, sales } from "../src/common/db";
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-function parseCSV(filename: string): any[] {
+function parseCSV<T>(filename: string): T[] {
 	return parse(readFileSync(resolve(__dirname, `./data/${filename}`), "utf-8"), { columns: true });
 }
 
