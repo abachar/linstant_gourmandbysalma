@@ -3,13 +3,13 @@ import { createPurchase, deletePurchaseById, findAllPurchases, findPurchaseById,
 
 export const findAllPurchasesFn = createServerFn({ method: "GET" }).handler(findAllPurchases);
 
-export type FindAllPurchasesReturn = Awaited<ReturnType<typeof findAllPurchases>>;
+export type FindAllPurchasesReturn = Awaited<ReturnType<typeof findAllPurchasesFn>>;
 
 export const findPurchaseByIdFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { id: string }) => data)
 	.handler(async ({ data }) => findPurchaseById(data.id));
 
-export type FindPurchaseByIdReturn = Awaited<ReturnType<typeof findPurchaseById>>;
+export type FindPurchaseByIdReturn = Awaited<ReturnType<typeof findPurchaseByIdFn>>;
 
 export const createPurchaseFn = createServerFn({ method: "POST" })
 	.inputValidator((data: { date: string; amount: string; description?: string }) => data)

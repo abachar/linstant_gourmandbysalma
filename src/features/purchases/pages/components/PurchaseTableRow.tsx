@@ -1,9 +1,9 @@
 import { amount, dateShort } from "@common/format";
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
-import type { GetPurchasesReturn } from "../../api.functions";
+import type { FindAllPurchasesReturn } from "../../api.functions";
 
-export const PurchaseTableRow: Component<{ purchase: GetPurchasesReturn[number] }> = ({ purchase }) => {
+export const PurchaseTableRow: Component<{ purchase: FindAllPurchasesReturn[number] }> = ({ purchase }) => {
 	return (
 		<Link
 			to="/purchases/$id"

@@ -9,7 +9,7 @@ export const findDashboardFn = createServerFn({ method: "GET" })
 		return getDashboard(d);
 	});
 
-export type FindDashboardReturn = Awaited<ReturnType<typeof getDashboard>>;
+export type FindDashboardReturn = Awaited<ReturnType<typeof findDashboardFn>>;
 
 export const findDaySalesFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { date: string }) => data)

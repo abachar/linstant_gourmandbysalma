@@ -3,10 +3,10 @@ import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
-import type { GetPurchaseByIdReturn } from "../api.functions";
+import type { FindPurchaseByIdReturn } from "../api.functions";
 import { updatePurchaseFn } from "../api.functions";
 
-export const PurchaseEditPage: Component<{ purchase: GetPurchaseByIdReturn }> = ({ purchase }) => {
+export const PurchaseEditPage: Component<{ purchase: FindPurchaseByIdReturn }> = ({ purchase }) => {
 	const navigate = useNavigate();
 	const [date, setDate] = createSignal(formatDateInput(purchase.date));
 	const [amount, setAmount] = createSignal(purchase.amount);

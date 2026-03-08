@@ -4,10 +4,9 @@ import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { Link, useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal, Show } from "solid-js";
-import type { GetPurchaseByIdReturn } from "../api.functions";
-import { deletePurchaseFn } from "../api.functions";
+import { deletePurchaseByIdFn, type FindPurchaseByIdReturn } from "../api.functions";
 
-export const PurchaseShowPage: Component<{ purchase: GetPurchaseByIdReturn }> = ({ purchase }) => {
+export const PurchaseShowPage: Component<{ purchase: FindPurchaseByIdReturn }> = ({ purchase }) => {
 	const navigate = useNavigate();
 	const [isDeleting, setIsDeleting] = createSignal(false);
 
@@ -15,7 +14,7 @@ export const PurchaseShowPage: Component<{ purchase: GetPurchaseByIdReturn }> = 
 		if (!confirm("Êtes-vous sûr de vouloir supprimer cet achat ?")) return;
 		setIsDeleting(true);
 		try {
-			await deletePurchaseFn({ data: { id: purchase.id } });
+			await deletePurchaseByIdFn({ data: { id: purchase.id } });
 			navigate({ to: "/purchases/" });
 		} finally {
 			setIsDeleting(false);
