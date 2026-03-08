@@ -1,8 +1,8 @@
 import salmaImg from "@assets/images/salma.jpeg";
-import { loginFn } from "@features/auth/auth.functions";
+import { loginFn } from "@features/auth";
 import { useMutation } from "@tanstack/solid-query";
 import { useNavigate } from "@tanstack/solid-router";
-import { createSignal, type Component } from "solid-js";
+import { type Component, createSignal } from "solid-js";
 
 export const LoginPage: Component = () => {
 	const [password, setPassword] = createSignal("");
