@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 import { RootComponent } from "@components/layouts";
-import { createRootRoute } from "@tanstack/solid-router";
+import { getSessionFn } from "@features/auth";
+import { createRootRoute, redirect } from "@tanstack/solid-router";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -24,5 +25,12 @@ export const Route = createRootRoute({
 			},
 		],
 	}),
+	beforeLoad: async ({ location }) => {
+		if (location.pathname === "/login") return;
+		const { authenticated } = await getSessionFn();
+		if (!authenticated) {
+			throw redirect({ to: "/login" });
+		}
+	},
 	component: RootComponent,
 });
