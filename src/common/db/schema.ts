@@ -33,13 +33,13 @@ export const purchases = pgTable(
 	(t) => [index("idx_purchases_date").on(t.date)],
 );
 
-export const inventory = pgTable(
-	"inventory",
+export const products = pgTable(
+	"products",
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
 		productName: text("product_name").notNull(),
 		quantity: integer("quantity").notNull().default(0),
 		updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 	},
-	(t) => [index("idx_inventory_product_name").on(t.productName)],
+	(t) => [index("idx_products_product_name").on(t.productName)],
 );

@@ -3,14 +3,14 @@ import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { Link } from "@tanstack/solid-router";
 import { useServerFn } from "@tanstack/solid-start";
 import { type Component, For } from "solid-js";
-import { getDaySalesFn } from "../../api.functions";
+import { findDaySalesFn } from "../../api.functions";
 
 export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = ({ date, onClose }) => {
-	const getDaySales = useServerFn(getDaySalesFn);
+	const findDaySales = useServerFn(findDaySalesFn);
 	const res = useQuery(() =>
 		queryOptions({
 			queryKey: ["dashboard", "sales", date],
-			queryFn: () => getDaySales({ data: { date } }),
+			queryFn: () => findDaySales({ data: { date } }),
 		}),
 	);
 

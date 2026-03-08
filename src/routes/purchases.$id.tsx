@@ -1,8 +1,8 @@
-import { getPurchaseByIdFn, PurchaseShowPage } from "@features/purchases";
+import { findPurchaseByIdFn, PurchaseShowPage } from "@features/purchases";
 import { createFileRoute } from "@tanstack/solid-router";
 
 export const Route = createFileRoute("/purchases/$id")({
-	loader: ({ params }) => getPurchaseByIdFn({ data: { id: params.id } }),
+	loader: ({ params }) => findPurchaseByIdFn({ data: { id: params.id } }),
 	component: RouteComponent,
 });
 

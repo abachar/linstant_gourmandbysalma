@@ -1,15 +1,15 @@
 import { createServerFn } from "@tanstack/solid-start";
-import { createPurchase, deletePurchase, getPurchaseById, getPurchases, updatePurchase } from "./api.server";
+import { createPurchase, deletePurchaseById, findAllPurchases, findPurchaseById, updatePurchase } from "./api.server";
 
-export const getPurchasesFn = createServerFn({ method: "GET" }).handler(getPurchases);
+export const findAllPurchasesFn = createServerFn({ method: "GET" }).handler(findAllPurchases);
 
-export type GetPurchasesReturn = Awaited<ReturnType<typeof getPurchases>>;
+export type FindAllPurchasesReturn = Awaited<ReturnType<typeof findAllPurchases>>;
 
-export const getPurchaseByIdFn = createServerFn({ method: "GET" })
+export const findPurchaseByIdFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { id: string }) => data)
-	.handler(async ({ data }) => getPurchaseById(data.id));
+	.handler(async ({ data }) => findPurchaseById(data.id));
 
-export type GetPurchaseByIdReturn = Awaited<ReturnType<typeof getPurchaseById>>;
+export type FindPurchaseByIdReturn = Awaited<ReturnType<typeof findPurchaseById>>;
 
 export const createPurchaseFn = createServerFn({ method: "POST" })
 	.inputValidator((data: { date: string; amount: string; description?: string }) => data)
@@ -19,6 +19,6 @@ export const updatePurchaseFn = createServerFn({ method: "POST" })
 	.inputValidator((data: { id: string; date: string; amount: string; description?: string }) => data)
 	.handler(async ({ data }) => updatePurchase(data));
 
-export const deletePurchaseFn = createServerFn({ method: "POST" })
+export const deletePurchaseByIdFn = createServerFn({ method: "POST" })
 	.inputValidator((data: { id: string }) => data)
-	.handler(async ({ data }) => deletePurchase(data.id));
+	.handler(async ({ data }) => deletePurchaseById(data.id));

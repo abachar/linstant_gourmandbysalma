@@ -1,2 +1,2 @@
-export { getDashboardFn, getDaySalesFn } from "./api.functions";
+export { findDashboardFn, findDaySalesFn } from "./api.functions";
 export { DashboardPage } from "./pages/DashboardPage";

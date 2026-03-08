@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { addDays, addYears, endOfDay, endOfMonth, startOfDay, startOfMonth, subDays } from "date-fns";
-import { createSale, getOneSaleById, getSales, updateSale } from "./api.server";
+import { createSale, findSaleById, findSalesByRange, updateSale } from "./api.server";
 
 function validFilter(filter: string) {
 	return ["upcoming", "month", "past", "all"].includes(filter) ? filter : "upcoming";
@@ -24,26 +24,24 @@ function getSaleInterval(filter: string): [Date, Date] {
 	return [minDate, maxDate];
 }
 
-export const getSalesFn = createServerFn({ method: "GET" })
+export const findSalesByRangeFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { filter: string }) => data)
 	.handler(async ({ data }) => {
 		const selectedFilter = validFilter(data.filter);
 		const [from, to] = getSaleInterval(selectedFilter);
 		return {
 			selectedFilter,
-			sales: await getSales(from, to),
+			sales: await findSalesByRange(from, to),
 		};
 	});
 
-export type GetSalesReturn = Awaited<ReturnType<typeof getSalesFn>>;
+export type FindSalesByRangeReturn = Awaited<ReturnType<typeof findSalesByRangeFn>>;
 
-export const getOneSaleByIdFn = createServerFn({ method: "GET" })
+export const findSaleByIdFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { id: string }) => data)
-	.handler(async ({ data }) => {
-		return await getOneSaleById(data.id);
-	});
+	.handler(async ({ data }) => findSaleById(data.id));
 
-export type GetOneSaleByIdReturn = Awaited<ReturnType<typeof getOneSaleByIdFn>>;
+export type FindSaleByIdReturn = Awaited<ReturnType<typeof findSaleByIdFn>>;
 
 export const createSaleFn = createServerFn({ method: "POST" })
 	.inputValidator(

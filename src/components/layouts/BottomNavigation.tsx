@@ -31,7 +31,7 @@ export const BottomNavigation: Component = () => (
 			<NavigationLink href="/" label="Dashboard" icon="dashboard" />
 			<NavigationLink href="/sales" label="Ventes" icon="shopping_bag" />
 			<NavigationLink href="/purchases" label="Achats" icon="receipt_long" />
-			<NavigationLink href="/inventory" label="Stock" icon="inventory_2" />
+			<NavigationLink href="/products" label="Stock" icon="inventory_2" />
 			<NavigationLink href="/taxes" label="Taxes" icon="account_balance_wallet" />
 		</div>
 	</nav>

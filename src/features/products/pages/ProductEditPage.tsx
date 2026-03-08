@@ -2,29 +2,30 @@ import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
-import { createInventoryItemFn } from "../api.functions";
+import type { FindProductByIdReturn } from "../api.functions";
+import { updateProductFn } from "../api.functions";
 
-export const InventoryCreatePage: Component = () => {
+export const ProductEditPage: Component<{ product: FindProductByIdReturn }> = ({ product }) => {
 	const navigate = useNavigate();
-	const [productName, setProductName] = createSignal("");
-	const [quantity, setQuantity] = createSignal("0");
+	const [productName, setProductName] = createSignal(product.productName);
+	const [quantity, setQuantity] = createSignal(String(product.quantity));
 	const [isPending, setIsPending] = createSignal(false);
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
 		setIsPending(true);
 		try {
-			await createInventoryItemFn({
-				data: { productName: productName(), quantity: parseInt(quantity(), 10) },
+			await updateProductFn({
+				data: { id: product.id, productName: productName(), quantity: parseInt(quantity(), 10) },
 			});
-			navigate({ to: "/inventory/" });
+			navigate({ to: "/products/" });
 		} finally {
 			setIsPending(false);
 		}
 	}
 
 	return (
-		<PageLayout title="Ajouter au stock" action={<HeaderCancelButton />}>
+		<PageLayout title="Modifier produit" action={<HeaderCancelButton />}>
 			<form onSubmit={handleSubmit} class="space-y-6">
 				<div class="space-y-4">
 					<label class="flex flex-col">
@@ -36,7 +37,6 @@ export const InventoryCreatePage: Component = () => {
 							required
 							value={productName()}
 							onInput={(e) => setProductName(e.currentTarget.value)}
-							placeholder="Ex: Mini Burger Poulet"
 							class="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
 						/>
 					</label>
@@ -57,7 +57,7 @@ export const InventoryCreatePage: Component = () => {
 
 				<div class="flex gap-3 pt-4">
 					<a
-						href="/inventory/"
+						href="/products/"
 						class="flex-1 h-14 rounded-xl border border-slate-300 dark:border-[#67323b] text-slate-700 dark:text-white font-bold text-base flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
 					>
 						Annuler
@@ -67,7 +67,7 @@ export const InventoryCreatePage: Component = () => {
 						disabled={isPending()}
 						class="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
 					>
-						Ajouter
+						Enregistrer
 					</button>
 				</div>
 			</form>

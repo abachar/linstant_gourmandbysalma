@@ -1,8 +1,8 @@
 export {
 	createPurchaseFn,
-	deletePurchaseFn,
-	getPurchaseByIdFn,
-	getPurchasesFn,
+	deletePurchaseByIdFn,
+	findAllPurchasesFn,
+	findPurchaseByIdFn,
 	updatePurchaseFn,
 } from "./api.functions";
 export { PurchaseCreatePage } from "./pages/PurchaseCreatePage";

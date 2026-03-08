@@ -1,4 +1,4 @@
-CREATE TABLE "inventory" (
+CREATE TABLE "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"product_name" text NOT NULL,
 	"quantity" integer DEFAULT 0 NOT NULL,
@@ -28,6 +28,6 @@ CREATE TABLE "sales" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX "idx_inventory_product_name" ON "inventory" USING btree ("product_name");--> statement-breakpoint
+CREATE INDEX "idx_products_product_name" ON "products" USING btree ("product_name");--> statement-breakpoint
 CREATE INDEX "idx_purchases_date" ON "purchases" USING btree ("date");--> statement-breakpoint
 CREATE INDEX "idx_sales_delivery_datetime" ON "sales" USING btree ("delivery_datetime");

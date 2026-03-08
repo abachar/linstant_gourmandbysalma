@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { parse } from "csv-parse/sync";
-import { db, inventory, purchases, sales } from "../src/common/db";
+import { db, products, purchases, sales } from "../src/common/db";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -24,13 +24,13 @@ function mapPaymentMethod(value: string): string {
 // Seed functions
 // ---------------------------------------------------------------------------
 
-async function seedInventory() {
+async function seedProducts() {
 	const records = parseCSV<{ id: string; product_name: string; quantity: string; created_at: string }>(
 		"inventory_rows.csv",
 	);
 
 	for (const r of records) {
-		await db.insert(inventory).values({
+		await db.insert(products).values({
 			id: r.id,
 			productName: r.product_name,
 			quantity: parseInt(r.quantity, 10),
@@ -38,7 +38,7 @@ async function seedInventory() {
 		});
 	}
 
-	console.log(`✓ Inventory : ${records.length} lignes`);
+	console.log(`✓ Products : ${records.length} lignes`);
 }
 
 async function seedPurchases() {
@@ -97,7 +97,7 @@ async function seedSales() {
 // ---------------------------------------------------------------------------
 async function main() {
 	console.log("Seeding database...");
-	await seedInventory();
+	await seedProducts();
 	await seedPurchases();
 	await seedSales();
 	console.log("Done!");

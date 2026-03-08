@@ -2,7 +2,7 @@ import { db, sales } from "@common/db";
 import { endOfDay, startOfDay } from "date-fns";
 import { between, desc, eq } from "drizzle-orm";
 
-export async function getSales(from: Date, end: Date) {
+export async function findSalesByRange(from: Date, end: Date) {
 	return await db
 		.select()
 		.from(sales)
@@ -10,9 +10,8 @@ export async function getSales(from: Date, end: Date) {
 		.orderBy(desc(sales.deliveryDatetime));
 }
 
-export async function getOneSaleById(id: string) {
+export async function findSaleById(id: string) {
 	const [sale] = await db.select().from(sales).where(eq(sales.id, id)).limit(1);
-
 	return sale;
 }
 
@@ -43,7 +42,6 @@ export async function createSale(data: SaleData) {
 			remainingPaymentMethod: data.remainingPaymentMethod,
 		})
 		.returning({ id: sales.id });
-
 	return { id: result.id };
 }
 
