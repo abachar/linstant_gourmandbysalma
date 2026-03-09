@@ -103,3 +103,8 @@ Chaque feature suit la convention :
 ## Authentification
 
 Accès protégé par mot de passe unique. La session est stockée dans un cookie signé HMAC-SHA256, valable 7 jours. Toutes les routes redirigent vers `/login` si la session est absente ou invalide.
+
+## Backlog
+
+- Supprimer le type `SaleData` et utiliser inference types drizzle et zod
+- Utiliser des schémas Zod dans les `inputValidator` des server functions
