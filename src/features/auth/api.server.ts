@@ -1,5 +1,8 @@
+import { scrypt, timingSafeEqual } from "node:crypto";
+import { promisify } from "node:util";
 import { getCookie, setCookie } from "@tanstack/solid-start/server";
 
+const scryptAsync = promisify(scrypt);
 const COOKIE_NAME = "auth_session";
 const MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
@@ -9,37 +12,47 @@ async function getSessionKey() {
 
 	const secret = process.env.SESSION_SECRET_HEX;
 	if (!secret) throw new Error("SESSION_SECRET_HEX is not set");
-
 	const encodedSecret = new TextEncoder().encode(secret);
 	_sessionKey = await crypto.subtle.importKey("raw", encodedSecret, { name: "HMAC", hash: "SHA-256" }, false, [
 		"sign",
 		"verify",
 	]);
-
 	return _sessionKey;
 }
 
-function getStoredPassword(): string {
+function getStoredPassword() {
 	const passwordHex = process.env.APP_PASSWORD_HEX;
 	if (!passwordHex) throw new Error("APP_PASSWORD_HEX is not set");
-	return Buffer.from(passwordHex, "hex").toString("utf-8");
+
+	// format: "salt:hash"
+	const [salt, storedHash] = passwordHex.split(":");
+	if (!salt || !storedHash) throw new Error("APP_PASSWORD_HEX has invalide format");
+
+	return [salt, storedHash];
+}
+
+async function verifyPassword(password: string) {
+	const [salt, storedHash] = getStoredPassword();
+	const derivedKey = (await scryptAsync(password, salt, 64)) as Buffer;
+	const storedKey = Buffer.from(storedHash, "hex");
+
+	// Comparaison en temps constant pour éviter les timing attacks
+	return timingSafeEqual(derivedKey, storedKey);
 }
 
 async function createSessionToken() {
 	const encoded = Buffer.from(Date.now().toString()).toString("base64");
 	const key = await getSessionKey();
 	const sig = Buffer.from(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(encoded))).toString("hex");
-
 	return `${encoded}.${sig}`;
 }
 
 export async function login(password: string) {
 	try {
-		const isValid = await Bun.password.verify(password, getStoredPassword());
+		const isValid = await verifyPassword(password);
 		if (!isValid) {
 			throw new Error("Mot de passe incorrect");
 		}
-
 		const token = await createSessionToken();
 		setCookie(COOKIE_NAME, token, {
 			httpOnly: true,
@@ -54,14 +67,11 @@ export async function login(password: string) {
 }
 
 async function verifySessionToken(token: string | undefined) {
-	// Has a token ?
 	if (!token) return false;
 
-	// Has a valid token format ?
 	const parts = token.split(".");
 	if (parts.length !== 2) return false;
 
-	// Has a valid signature ?
 	const [encoded, sig] = parts;
 	const key = await getSessionKey();
 	const sigBuffer = Buffer.from(sig, "hex");
@@ -69,16 +79,13 @@ async function verifySessionToken(token: string | undefined) {
 	const isValid = await crypto.subtle.verify("HMAC", key, sigBuffer, dataBuffer);
 	if (!isValid) return false;
 
-	// Has a valid encoded timestamp ?
 	const decodedPayload = Buffer.from(encoded, "base64").toString("utf-8");
 	const timestamp = parseInt(decodedPayload, 10);
 	if (Number.isNaN(timestamp)) return false;
 
-	// Token is not expired ?
 	const ageMs = Date.now() - timestamp;
 	if (ageMs > MAX_AGE_SECONDS * 1000) return false;
 	if (ageMs < 0) return false;
-
 	return true;
 }
 
