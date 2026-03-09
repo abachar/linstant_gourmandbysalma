@@ -17,38 +17,43 @@ async function getAvailableYears() {
 }
 
 async function getMonthlySummary(year: number) {
-	const result = await db
+	const rows = await db
 		.select({
 			month: sql<number>`EXTRACT(MONTH FROM ${sales.deliveryDatetime})::int`,
-			totalDeposit: sql<number>`
-        COALESCE(SUM(
-          CASE WHEN ${sales.depositPaymentMethod} = 'Bancaire'
-          THEN ${sales.deposit}::numeric
-          ELSE 0 END
-        ), 0)
-      `,
-			totalRemaining: sql<number>`
-        COALESCE(SUM(
-          CASE WHEN ${sales.remainingPaymentMethod} = 'Bancaire'
-          THEN ${sales.remaining}::numeric
-          ELSE 0 END
-        ), 0)
-      `,
+			deposit: sales.deposit,
+			depositPaymentMethod: sales.depositPaymentMethod,
+			remaining: sales.remaining,
+			remainingPaymentMethod: sales.remainingPaymentMethod,
 		})
 		.from(sales)
-		.where(sql`EXTRACT(YEAR FROM ${sales.deliveryDatetime}) = ${year}`)
-		.groupBy(sql`EXTRACT(MONTH FROM ${sales.deliveryDatetime})`)
-		.orderBy(sql`EXTRACT(MONTH FROM ${sales.deliveryDatetime}) DESC`);
+		.where(sql`EXTRACT(YEAR FROM ${sales.deliveryDatetime}) = ${year}`);
 
-	return result.map((row) => {
-		const totalToDeclare = Number(row.totalDeposit) + Number(row.totalRemaining);
-		return {
-			month: row.month,
-			monthLabel: getMonthName(row.month),
-			totalToDeclare: Math.round(totalToDeclare * 100) / 100,
-			taxAmount: Math.round(totalToDeclare * TAX_RATE * 100) / 100,
-		};
-	});
+	const byMonth = new Map<number, { totalAmount: number; bankTotalAmount: number; cashTotalAmount: number }>();
+
+	for (const row of rows) {
+		const deposit = Number(row.deposit);
+		const remaining = Number(row.remaining);
+		const entry = byMonth.get(row.month) ?? { totalAmount: 0, bankTotalAmount: 0, cashTotalAmount: 0 };
+
+		entry.totalAmount += deposit + remaining;
+		if (row.depositPaymentMethod === "Bank") entry.bankTotalAmount += deposit;
+		if (row.remainingPaymentMethod === "Bank") entry.bankTotalAmount += remaining;
+		if (row.depositPaymentMethod === "Cash") entry.cashTotalAmount += deposit;
+		if (row.remainingPaymentMethod === "Cash") entry.cashTotalAmount += remaining;
+
+		byMonth.set(row.month, entry);
+	}
+
+	return Array.from(byMonth.entries())
+		.sort(([a], [b]) => b - a)
+		.map(([month, { totalAmount, bankTotalAmount, cashTotalAmount }]) => ({
+			month,
+			monthLabel: getMonthName(month),
+			totalAmount: Math.round(totalAmount * 100) / 100,
+			bankTotalAmount: Math.round(bankTotalAmount * 100) / 100,
+			cashTotalAmount: Math.round(cashTotalAmount * 100) / 100,
+			taxAmount: Math.round(totalAmount * TAX_RATE * 100) / 100,
+		}));
 }
 
 export async function getTaxReporting(year: number) {

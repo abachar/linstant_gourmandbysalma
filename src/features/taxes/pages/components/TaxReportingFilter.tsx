@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
-import type { GetTaxReportingReturn } from "../../api.functions";
+import type { FindTaxReportingReturn } from "../../api.functions";
 
 export const FilterLink: Component<{ year: number; active: boolean }> = ({ year, active }) => (
 	<Link
@@ -20,7 +20,7 @@ export const FilterLink: Component<{ year: number; active: boolean }> = ({ year,
 	</Link>
 );
 
-export const TaxReportingFilter: Component<GetTaxReportingReturn> = ({ availableYears, selectedYear }) => {
+export const TaxReportingFilter: Component<FindTaxReportingReturn> = ({ availableYears, selectedYear }) => {
 	return (
 		<div class="flex gap-2 py-3 overflow-x-auto hide-scrollbar">
 			{availableYears.map((year) => (
