@@ -10,7 +10,7 @@
 		"format": "biome format --write",
 		"lint": "biome lint",
 		"check": "biome check",
-		"start": "bunx srvx --prod -s ../client dist/server/server.js"
+		"start": "bun run srvx --prod -s ../client dist/server/server.js"
 	},
 	"keywords": [],
 	"author": "",
