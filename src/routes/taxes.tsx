@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/solid-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 
-export const Route = createFileRoute("/taxes/")({
+export const Route = createFileRoute("/taxes")({
 	validateSearch: zodValidator(z.object({ year: z.number().default(new Date().getFullYear()) })),
 	loaderDeps: ({ search: { year } }) => ({ year }),
 	loader: ({ deps }) => findTaxReportingFn({ data: { year: deps.year } }),

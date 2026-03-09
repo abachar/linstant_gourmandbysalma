@@ -1,7 +1,7 @@
 import { findSaleByIdFn, SaleShowPage } from "@features/sales";
 import { createFileRoute } from "@tanstack/solid-router";
 
-export const Route = createFileRoute("/sales/$id")({
+export const Route = createFileRoute("/sales/$id/")({
 	loader: ({ params }) => findSaleByIdFn({ data: { id: params.id } }),
 	component: RouteComponent,
 });
