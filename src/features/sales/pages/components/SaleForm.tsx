@@ -1,7 +1,8 @@
 import { type Component, For } from "solid-js";
 import { createStore } from "solid-js/store";
+import { PaymentMethodValue } from "./PaymentMethodValue";
 
-const PAYMENT_METHODS = ["Bancaire", "Espèces"] as const;
+const PAYMENT_METHODS = ["Bank", "Cash"] as const;
 
 export interface SaleFormValues {
 	clientName: string;
@@ -181,9 +182,11 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 												/>
 												<div class="peer-checked:border-primary peer-checked:border-2 peer-checked:bg-primary peer-checked:text-white flex flex-col items-center justify-center p-3 rounded-xl border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-400 transition-all">
 													<span class="material-symbols-outlined mb-1">
-														{method === "Bancaire" ? "credit_card" : "money_bag"}
+														{method === "Bank" ? "credit_card" : "money_bag"}
 													</span>
-													<span class="text-xs font-bold">{method}</span>
+													<span class="text-xs font-bold">
+														<PaymentMethodValue value={method} />
+													</span>
 												</div>
 											</label>
 										)}
@@ -216,9 +219,11 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 												/>
 												<div class="peer-checked:border-primary peer-checked:border-2 peer-checked:bg-primary peer-checked:text-white flex flex-col items-center justify-center p-3 rounded-xl border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-400 transition-all">
 													<span class="material-symbols-outlined mb-1">
-														{method === "Bancaire" ? "credit_card" : "money_bag"}
+														{method === "Bank" ? "credit_card" : "money_bag"}
 													</span>
-													<span class="text-xs font-bold">{method}</span>
+													<span class="text-xs font-bold">
+														<PaymentMethodValue value={method} />
+													</span>
 												</div>
 											</label>
 										)}

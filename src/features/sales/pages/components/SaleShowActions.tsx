@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
-import type { GetOneSaleByIdReturn } from "../../api.functions";
+import type { FindSaleByIdReturn } from "../../api.functions";
 
-export const SaleShowActions: Component<{ sale: GetOneSaleByIdReturn }> = ({ sale }) => (
+export const SaleShowActions: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) => (
 	<div class="flex gap-3 pt-4">
 		<Link
 			to="/sales/$id/edit"

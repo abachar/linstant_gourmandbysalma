@@ -15,8 +15,8 @@ function toTimestamp(value: string): Date {
 }
 
 function mapPaymentMethod(value: string): string {
-	if (value === "Cash") return "Espèces";
-	if (value === "Revolut" || value === "PayPal") return "Bancaire";
+	if (value === "Cash") return "Cash";
+	if (value === "Revolut" || value === "PayPal") return "Bank";
 	return value;
 }
 

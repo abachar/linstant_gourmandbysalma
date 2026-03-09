@@ -3,11 +3,11 @@ import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
-import type { GetOneSaleByIdReturn } from "../api.functions";
+import type { FindSaleByIdReturn } from "../api.functions";
 import { updateSaleFn } from "../api.functions";
 import { SaleForm, type SaleFormValues } from "./components/SaleForm";
 
-export const SaleEditPage: Component<{ sale: GetOneSaleByIdReturn }> = ({ sale }) => {
+export const SaleEditPage: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) => {
 	const navigate = useNavigate();
 	const [isPending, setIsPending] = createSignal(false);
 

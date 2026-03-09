@@ -1,9 +1,10 @@
 import { amount, dateShort } from "@common/format";
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
-import type { GetSalesReturn } from "../../api.functions";
+import type { FindSalesByRangeReturn } from "../../api.functions";
+import { PaymentMethodValue } from "./PaymentMethodValue";
 
-export const SaleTableRow: Component<{ sale: GetSalesReturn[number] }> = ({ sale }) => {
+export const SaleTableRow: Component<{ sale: FindSalesByRangeReturn["sales"][number] }> = ({ sale }) => {
 	return (
 		<Link
 			to="/sales/$id"
@@ -37,12 +38,16 @@ export const SaleTableRow: Component<{ sale: GetSalesReturn[number] }> = ({ sale
 					<div class="bg-slate-50 dark:bg-black/20 p-2 rounded-lg text-center">
 						<p class="text-[10px] text-slate-400 uppercase font-bold">Acompte</p>
 						<p class="text-sm font-bold text-slate-700 dark:text-white">{amount(sale.deposit)}</p>
-						<p class="text-[9px] text-slate-400">{sale.depositPaymentMethod}</p>
+						<p class="text-[9px] text-slate-400">
+							<PaymentMethodValue value={sale.depositPaymentMethod} />
+						</p>
 					</div>
 					<div class="bg-primary/10 dark:bg-primary/20 p-2 rounded-lg text-center">
 						<p class="text-[10px] text-primary uppercase font-bold">Reste</p>
 						<p class="text-sm font-bold text-primary">{amount(sale.remaining)}</p>
-						<p class="text-[9px] text-primary/70">{sale.remainingPaymentMethod}</p>
+						<p class="text-[9px] text-primary/70">
+							<PaymentMethodValue value={sale.remainingPaymentMethod} />
+						</p>
 					</div>
 					<div class="bg-slate-50 dark:bg-black/20 p-2 rounded-lg text-center border border-primary/20">
 						<p class="text-[10px] text-slate-400 uppercase font-bold">Total</p>

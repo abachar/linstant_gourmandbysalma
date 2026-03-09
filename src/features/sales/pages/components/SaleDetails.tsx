@@ -1,8 +1,9 @@
 import { amount, datetimeLong } from "@common/format";
 import type { Component } from "solid-js";
-import type { GetOneSaleByIdReturn } from "../../api.functions";
+import type { FindSaleByIdReturn } from "../../api.functions";
+import { PaymentMethodValue } from "./PaymentMethodValue";
 
-export const SaleDetails: Component<{ sale: GetOneSaleByIdReturn }> = ({ sale }) => {
+export const SaleDetails: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) => {
 	return (
 		<>
 			<div class="p-4 rounded-xl bg-white dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-white/5">
@@ -39,14 +40,14 @@ export const SaleDetails: Component<{ sale: GetOneSaleByIdReturn }> = ({ sale })
 						<p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Acompte</p>
 						<p class="text-lg font-bold text-slate-700 dark:text-white">{amount(sale.deposit)}</p>
 						<span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">
-							{sale.depositPaymentMethod}
+							<PaymentMethodValue value={sale.depositPaymentMethod} />
 						</span>
 					</div>
 					<div class="bg-primary/10 dark:bg-primary/20 p-3 rounded-lg text-center">
 						<p class="text-[10px] text-primary uppercase font-bold mb-1">Reste</p>
 						<p class="text-lg font-bold text-primary">{amount(sale.remaining)}</p>
 						<span class="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-bold">
-							{sale.remainingPaymentMethod}
+							<PaymentMethodValue value={sale.remainingPaymentMethod} />
 						</span>
 					</div>
 					<div class="bg-slate-50 dark:bg-black/20 p-3 rounded-lg text-center border border-primary/20">

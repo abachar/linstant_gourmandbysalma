@@ -1,9 +1,9 @@
 import { EmptyState } from "@components/ui";
 import type { Component } from "solid-js";
-import type { GetSalesReturn } from "../../api.functions";
+import type { FindSalesByRangeReturn } from "../../api.functions";
 import { SaleTableRow } from "./SaleTableRow";
 
-export const SaleTable: Component<GetSalesReturn> = ({ sales }) => {
+export const SaleTable: Component<FindSalesByRangeReturn> = ({ sales }) => {
 	return sales.length === 0 ? (
 		<EmptyState
 			emptyIcon="shopping_bag"
