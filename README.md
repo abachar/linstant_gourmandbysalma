@@ -14,7 +14,7 @@ Site d'administration des commandes / achats pour traiteur spécialisé en petit
 
 | Couche | Technologie |
 |---|---|
-| Runtime | [Bun](https://bun.sh) |
+| Runtime | Node.js + [pnpm](https://pnpm.io) |
 | Framework | [TanStack Start](https://tanstack.com/start) + [Solid.js](https://www.solidjs.com) (SSR) |
 | Routing | TanStack Solid Router (file-based) |
 | Data fetching | TanStack Solid Query |
@@ -25,14 +25,15 @@ Site d'administration des commandes / achats pour traiteur spécialisé en petit
 
 ## Prérequis
 
-- [Bun](https://bun.sh) ≥ 1.0
+- Node.js ≥ 20
+- pnpm
 - PostgreSQL
 
 ## Installation
 
 ```bash
 # Installer les dépendances
-bun install
+pnpm install
 
 # Copier le fichier d'environnement
 cp .env.example .env
@@ -42,21 +43,21 @@ Renseigner les variables dans `.env` :
 
 ```env
 # URL de connexion PostgreSQL
-DATABASE_URL="postgresql://DB_USERNAME:DB_PASSWORD@DB_HOST:DB_PORT/DB_NAME"
+DATABASE_URL=postgresql://DB_USERNAME:DB_PASSWORD@DB_HOST:DB_PORT/DB_NAME
 
 # Hash du mot de passe de l'application
-# Générer avec : bun -e "console.log(Buffer.from(await Bun.password.hash('VOTRE_MOT_DE_PASSE')).toString('hex'))"
+# Générer avec : node -e "const c=require('crypto');console.log(c.createHash('sha256').update('VOTRE_MOT_DE_PASSE').digest('hex'))"
 APP_PASSWORD_HEX=YOUR_PASSWORD_HASHED
 
 # Clé secrète de session
-# Générer avec : bunx auth@latest secret
+# Générer avec : node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 SESSION_SECRET_HEX=YOUR_GENERATED_SECRET
 ```
 
 ## Développement
 
 ```bash
-bun run dev
+pnpm dev
 ```
 
 L'application est disponible sur `http://localhost:5173`.
@@ -65,10 +66,10 @@ L'application est disponible sur `http://localhost:5173`.
 
 ```bash
 # Construire l'application
-bun run build
+pnpm build
 
 # Démarrer en production
-bun run start
+pnpm start
 ```
 
 ## Structure du projet
@@ -98,7 +99,6 @@ Chaque feature suit la convention :
 |---|---|
 | `api.server.ts` | Accès direct à la base de données (serveur uniquement) |
 | `api.functions.ts` | Wrappers `createServerFn` (appelables depuis le client) |
-| `api.queries.ts` | `queryOptions` pour TanStack Query |
 
 ## Authentification
 
