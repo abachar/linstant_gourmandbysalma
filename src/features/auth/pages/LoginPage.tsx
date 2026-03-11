@@ -5,15 +5,16 @@ import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
 
 export const LoginPage: Component = () => {
+	const [email, setEmail] = createSignal("");
 	const [password, setPassword] = createSignal("");
 	const navigate = useNavigate();
 	const login = useMutation(() => ({
-		mutationFn: (password: string) => loginFn({ data: { password } }),
+		mutationFn: (data: { email: string; password: string }) => loginFn({ data }),
 		onSuccess: () => navigate({ to: "/" }),
 	}));
 
 	return (
-		<div class="flex items-center justify-center p-4 mt-50">
+		<div class="flex items-center justify-center p-4 pt-40">
 			<div class="w-full max-w-sm">
 				<div class="text-center mb-8">
 					<div class="flex justify-center mb-4">
@@ -36,11 +37,21 @@ export const LoginPage: Component = () => {
 					)}
 
 					<input
+						type="text"
+						name="email"
+						required
+						autofocus
+						placeholder="Adresse e-mail"
+						onInput={(e) => setEmail(e.target.value)}
+						class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-card-dark text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+					/>
+
+					<input
 						type="password"
 						name="password"
 						required
 						autofocus
-						placeholder="Entrez le mot de passe"
+						placeholder="Mot de passe"
 						onInput={(e) => setPassword(e.target.value)}
 						class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-border-dark bg-white dark:bg-card-dark text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
 					/>
@@ -48,7 +59,7 @@ export const LoginPage: Component = () => {
 					<button
 						type="submit"
 						disabled={login.isPending}
-						onClick={() => login.mutate(password())}
+						onClick={() => login.mutate({ email: email(), password: password() })}
 						class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-xl transition-colors disabled:opacity-50"
 					>
 						{login.isPending ? "Connexion..." : "Se connecter"}

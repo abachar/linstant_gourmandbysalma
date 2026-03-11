@@ -21,14 +21,20 @@ async function getSessionKey() {
 }
 
 function getStoredPassword() {
-	const passwordHex = process.env.APP_PASSWORD_HEX;
-	if (!passwordHex) throw new Error("APP_PASSWORD_HEX is not set");
+	const adminPasswordHex = process.env.APP_ADMIN_PASSWORD_HEX;
+	if (!adminPasswordHex) throw new Error("APP_ADMIN_PASSWORD_HEX is not set");
 
 	// format: "salt:hash"
-	const [salt, storedHash] = passwordHex.split(":");
-	if (!salt || !storedHash) throw new Error("APP_PASSWORD_HEX has invalide format");
+	const [salt, storedHash] = adminPasswordHex.split(":");
+	if (!salt || !storedHash) throw new Error("APP_ADMIN_PASSWORD_HEX has invalide format");
 
 	return [salt, storedHash];
+}
+
+function verifyEmail(email: string) {
+	const adminEmail = process.env.APP_ADMIN_EMAIL;
+	if (!adminEmail) throw new Error("APP_ADMIN_EMAIL is not set");
+	return email === adminEmail;
 }
 
 async function verifyPassword(password: string) {
@@ -47,12 +53,17 @@ async function createSessionToken() {
 	return `${encoded}.${sig}`;
 }
 
-export async function login(password: string) {
+export async function login(email: string, password: string) {
 	try {
+		if (!verifyEmail(email)) {
+			throw new Error("Adresse mail incorrect");
+		}
+
 		const isValid = await verifyPassword(password);
 		if (!isValid) {
 			throw new Error("Mot de passe incorrect");
 		}
+
 		const token = await createSessionToken();
 		setCookie(COOKIE_NAME, token, {
 			httpOnly: true,
