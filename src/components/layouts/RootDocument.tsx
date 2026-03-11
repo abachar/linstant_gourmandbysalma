@@ -7,7 +7,7 @@ export const RootDocument: ParentComponent = ({ children }) => (
 		<head>
 			<HydrationScript />
 		</head>
-		<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen pb-24">
+		<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
 			<HeadContent />
 			<Suspense>{children}</Suspense>
 			<Scripts />
