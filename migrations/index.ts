@@ -96,10 +96,16 @@ async function seedSales() {
 // Main
 // ---------------------------------------------------------------------------
 async function main() {
+	console.log("Cleaning database...");
+	await db.delete(products);
+	await db.delete(purchases);
+	await db.delete(sales);
+
 	console.log("Seeding database...");
 	await seedProducts();
 	await seedPurchases();
 	await seedSales();
+
 	console.log("Done!");
 	process.exit(0);
 }

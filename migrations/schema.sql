@@ -1,10 +1,14 @@
+--
+-- Create tables
+--
+
 CREATE TABLE "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"product_name" text NOT NULL,
 	"quantity" integer DEFAULT 0 NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
---> statement-breakpoint
+
 CREATE TABLE "purchases" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"date" timestamp with time zone NOT NULL,
@@ -12,7 +16,7 @@ CREATE TABLE "purchases" (
 	"description" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
---> statement-breakpoint
+
 CREATE TABLE "sales" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"client_name" text NOT NULL,
@@ -27,7 +31,11 @@ CREATE TABLE "sales" (
 	"quote_generated_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
---> statement-breakpoint
-CREATE INDEX "idx_products_product_name" ON "products" USING btree ("product_name");--> statement-breakpoint
-CREATE INDEX "idx_purchases_date" ON "purchases" USING btree ("date");--> statement-breakpoint
+
+--
+-- Create indexes
+--
+
+CREATE INDEX "idx_products_product_name" ON "products" USING btree ("product_name");
+CREATE INDEX "idx_purchases_date" ON "purchases" USING btree ("date");
 CREATE INDEX "idx_sales_delivery_datetime" ON "sales" USING btree ("delivery_datetime");
