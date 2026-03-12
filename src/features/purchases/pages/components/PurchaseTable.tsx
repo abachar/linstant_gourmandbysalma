@@ -7,9 +7,9 @@ export const PurchaseTable: Component<{ purchases: FindAllPurchasesReturn }> = (
 	return purchases.length === 0 ? (
 		<EmptyState
 			emptyIcon="shopping_bag"
-			emptyLabel="Aucune vente trouvée."
-			actionUrl="/sales/new"
-			actionLabel="Créer une vente"
+			emptyLabel="Aucun achat trouvé."
+			actionUrl="/purchases/new"
+			actionLabel="Créer un achat"
 		/>
 	) : (
 		<div class="space-y-5">
