@@ -28,6 +28,7 @@ export const purchases = pgTable(
 		date: timestamp("date", { withTimezone: true }).notNull(),
 		amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
 		description: text("description"),
+		importRef: text("import_ref").unique(),
 		createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 	},
 	(t) => [index("idx_purchases_date").on(t.date)],

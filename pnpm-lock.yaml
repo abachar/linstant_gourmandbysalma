@@ -26,6 +26,9 @@ importers:
       better-auth:
         specifier: ^1.5.4
         version: 1.5.4(3bfcc1c6ab74d350c104133df12a4011)
+      csv-parse:
+        specifier: ^6.1.0
+        version: 6.1.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -66,9 +69,6 @@ importers:
       '@types/pg':
         specifier: ^8.18.0
         version: 8.18.0
-      csv-parse:
-        specifier: ^6.1.0
-        version: 6.1.0
       dotenv:
         specifier: ^17.3.1
         version: 17.3.1
