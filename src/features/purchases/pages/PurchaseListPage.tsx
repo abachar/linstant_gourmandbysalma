@@ -1,14 +1,35 @@
 import { HeaderAddButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
+import { CardList, EmptyState } from "@components/ui";
+import { useNavigate } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
 import type { FindAllPurchasesReturn } from "../api.functions";
-import { PurchaseTable } from "./components";
+import { PurchaseCardContent } from "./components";
 
 export const PurchaseListPage: Component<{ purchases: FindAllPurchasesReturn }> = ({ purchases }) => {
+	const navigate = useNavigate();
+	const onEditClick = (purchase: FindAllPurchasesReturn[number]) =>
+		navigate({ to: `/purchases/$id/edit`, params: { id: purchase.id } });
+	const onDeleteClick = () => {};
+
 	return (
 		<PageLayout title="Achats" action={<HeaderAddButton to="/purchases/new" />}>
-			<h3 class="text-white/60 text-sm font-bold uppercase tracking-widest px-1 py-2">Liste des achats</h3>
-			<PurchaseTable purchases={purchases} />
+			<div class="flex items-center justify-between mb-3 px-1">
+				<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Liste des achats</h2>
+			</div>
+
+			{purchases.length === 0 ? (
+				<EmptyState
+					emptyIcon="shopping_bag"
+					emptyLabel="Aucun achat trouvé."
+					actionUrl="/purchases/new"
+					actionLabel="Créer un achat"
+				/>
+			) : (
+				<CardList rows={purchases} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
+					{(purchase) => <PurchaseCardContent purchase={purchase} />}
+				</CardList>
+			)}
 		</PageLayout>
 	);
 };

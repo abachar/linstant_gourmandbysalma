@@ -1,2 +1,2 @@
+export { TaxReportingCardContent } from "./TaxReportingCardContent";
 export { TaxReportingFilter } from "./TaxReportingFilter";
-export { TaxReportingTable } from "./TaxReportingTable";

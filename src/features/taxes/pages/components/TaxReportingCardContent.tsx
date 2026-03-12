@@ -4,9 +4,9 @@ import type { FindTaxReportingReturn } from "../../api.functions";
 
 type MonthlyItem = FindTaxReportingReturn["monthlyItems"][0];
 
-export const TaxReportingTableRow: Component<{ monthlyItem: MonthlyItem }> = ({ monthlyItem }) => {
+export const TaxReportingCardContent: Component<{ monthlyItem: MonthlyItem }> = ({ monthlyItem }) => {
 	return (
-		<div class="p-4 rounded-xl bg-white dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-white/5">
+		<>
 			<div class="flex justify-between items-center mb-3">
 				<p class="text-slate-900 dark:text-white text-base font-bold">{monthlyItem.monthLabel}</p>
 				<p class="text-xl font-black text-slate-900 dark:text-white tabular-nums">{amount(monthlyItem.totalAmount)}</p>
@@ -29,6 +29,6 @@ export const TaxReportingTableRow: Component<{ monthlyItem: MonthlyItem }> = ({ 
 					<p class="text-sm font-bold text-primary tabular-nums">{amount(monthlyItem.taxAmount)}</p>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };

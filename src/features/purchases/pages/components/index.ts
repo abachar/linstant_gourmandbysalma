@@ -1,1 +1,1 @@
-export { PurchaseTable } from "./PurchaseTable";
+export { PurchaseCardContent } from "./PurchaseCardContent";
