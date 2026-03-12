@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { isValid, parse } from "date-fns";
-import { getDashboard, getDaySales } from "./api.server";
+import { findDaySales, getDashboard } from "./api.server";
 
 export const findDashboardFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { month: string | undefined }) => data)
@@ -15,5 +15,5 @@ export const findDaySalesFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { date: string }) => data)
 	.handler(async ({ data }) => {
 		const date = parse(data.date, "yyyy-MM-dd", new Date());
-		return isValid(date) ? getDaySales(date) : [];
+		return isValid(date) ? findDaySales(date) : [];
 	});

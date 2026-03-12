@@ -18,7 +18,7 @@ export const TopHeader: Component<TopHeaderProps> = ({ title, action }) => (
 				<h1 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">{title}</h1>
 				<p class="text-xs text-primary font-medium">L'Instant Gourmand</p>
 			</div>
-			{action && <div class="flex items-center gap-2">{action}</div>}
+			{action && <div class="flex items-center gap-4">{action}</div>}
 		</div>
 	</header>
 );

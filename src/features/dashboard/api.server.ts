@@ -13,7 +13,7 @@ import {
 	startOfYear,
 	subMonths,
 } from "date-fns";
-import { between, sql } from "drizzle-orm";
+import { asc, between, sql } from "drizzle-orm";
 
 async function sumSales(from: Date, to: Date) {
 	const result = await db
@@ -77,14 +77,15 @@ export async function getDashboard(d: Date) {
 	};
 }
 
-export async function getDaySales(d: Date) {
+export async function findDaySales(d: Date) {
 	const start = startOfDay(d);
 	const end = endOfDay(d);
 
 	const result = await db
 		.select()
 		.from(sales)
-		.where(between(sales.deliveryDatetime, start, end));
+		.where(between(sales.deliveryDatetime, start, end))
+		.orderBy(asc(sales.deliveryDatetime));
 
 	return result.map((s) => ({
 		id: s.id,
