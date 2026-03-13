@@ -11,11 +11,7 @@ type CardRowProps<T> = {
 
 export const CardRow = <T,>(props: CardRowProps<T>) => (
 	<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark shadow-sm overflow-hidden flex flex-col">
-		<button
-			type="button"
-			onClick={() => props.onCardClick?.(props.row)}
-			class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark shadow-sm block w-full"
-		>
+		<button type="button" onClick={() => props.onCardClick?.(props.row)}>
 			<div class="p-3">{props.children(props.row)}</div>
 		</button>
 
