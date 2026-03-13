@@ -18,8 +18,10 @@ export const PurchaseListPage: Component<FindAllPurchasesReturn> = (props) => {
 	const onEditClick = (purchase: FindAllPurchasesReturn["purchases"][number]) =>
 		navigate({ to: `/purchases/$id/edit`, params: { id: purchase.id } });
 
-	const onDeleteClick = (purchase: FindAllPurchasesReturn["purchases"][number]) =>
+	const onDeleteClick = (purchase: FindAllPurchasesReturn["purchases"][number]) => {
+		if (!confirm("Supprimer cet achat ?")) return;
 		deletePurchase({ data: { id: purchase.id } });
+	};
 
 	return (
 		<PageLayout title="Achats" addUrl="/purchases/new" moreActions={<HeaderUploadButton />}>
