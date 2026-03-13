@@ -15,6 +15,8 @@ import {
 } from "date-fns";
 import { asc, between, sql } from "drizzle-orm";
 
+const TAX_RATE = 0.123;
+
 async function sumSales(from: Date, to: Date) {
 	const result = await db
 		.select({ total: sql<string>`coalesce(sum(${sales.amount}), 0)` })
@@ -65,14 +67,19 @@ export async function getDashboard(d: Date) {
 	const startOfYearDate = startOfYear(d);
 	const endOfYearDate = endOfYear(d);
 
+	const currentMonthSales = await sumSales(startOfMonthDate, endOfMonthDate);
+	const currentYearSales = await sumSales(startOfYearDate, endOfYearDate);
+
 	return {
 		calendarTitle: format(d, "MMMM yyyy"),
 		prevMonth: format(startOfMonth(subMonths(d, 1)), "yyyy-MM-dd"),
 		nextMonth: format(startOfMonth(addMonths(d, 1)), "yyyy-MM-dd"),
-		currentMonthSales: await sumSales(startOfMonthDate, endOfMonthDate),
+		currentMonthSales,
 		currentMonthExpenses: await sumPurchases(startOfMonthDate, endOfMonthDate),
-		currentYearSales: await sumSales(startOfYearDate, endOfYearDate),
+		currentYearSales,
 		currentYearExpenses: await sumPurchases(startOfYearDate, endOfYearDate),
+		currentMonthTax: Math.round(currentMonthSales * TAX_RATE * 100) / 100,
+		currentYearTax: Math.round(currentYearSales * TAX_RATE * 100) / 100,
 		monthSales: await getMonthSales(d),
 	};
 }

@@ -21,6 +21,8 @@ export const Statistics: Component<FindDashboardReturn> = ({
 	currentMonthExpenses,
 	currentYearSales,
 	currentYearExpenses,
+	currentMonthTax,
+	currentYearTax,
 }) => {
 	const monthProfit = currentMonthSales - currentMonthExpenses;
 	const yearProfit = currentYearSales - currentYearExpenses;
@@ -35,7 +37,7 @@ export const Statistics: Component<FindDashboardReturn> = ({
 				<StatisticCard title="Chiffre d'affaires" monthValue={currentMonthSales} yearValue={currentYearSales} />
 				<StatisticCard title="Dépenses" monthValue={currentMonthExpenses} yearValue={currentYearExpenses} />
 				<StatisticCard title="Bénéfice Net" monthValue={monthProfit} yearValue={yearProfit} />
-				<StatisticCard title="Taxes" monthValue={0} yearValue={0} />
+				<StatisticCard title="Taxe" monthValue={currentMonthTax} yearValue={currentYearTax} />
 			</div>
 		</div>
 	);
