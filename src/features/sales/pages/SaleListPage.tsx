@@ -1,6 +1,7 @@
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
+import { ShoppingBag } from "lucide-solid";
 import type { Component } from "solid-js";
 import type { FindSalesByRangeReturn } from "../api.functions";
 import { SaleCardContent, SaleListFilter } from "./components";
@@ -16,7 +17,7 @@ export const SaleListPage: Component<FindSalesByRangeReturn> = ({ sales, selecte
 
 			{sales.length === 0 ? (
 				<EmptyState
-					emptyIcon="shopping_bag"
+					emptyIcon={<ShoppingBag />}
 					emptyLabel="Aucune vente trouvée."
 					actionUrl="/sales/new"
 					actionLabel="Créer une vente"

@@ -1,3 +1,4 @@
+import { Pencil, Trash2 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
 
 type CardRowProps<T> = {
@@ -25,7 +26,7 @@ export const CardRow = <T,>(props: CardRowProps<T>) => (
 					onClick={() => props.onEditClick(props.row)}
 					class="flex-1 h-10 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
 				>
-					<span class="material-symbols-outlined text-lg">edit</span>
+					<Pencil size={18} />
 					Modifier
 				</button>
 			)}
@@ -35,7 +36,7 @@ export const CardRow = <T,>(props: CardRowProps<T>) => (
 					onClick={() => props.onDeleteClick(props.row)}
 					class="flex-1 border-l border-slate-100 dark:border-white/5 h-10 flex items-center justify-center gap-2 text-primary text-sm font-medium hover:bg-primary/5 transition-colors"
 				>
-					<span class="material-symbols-outlined text-lg">delete</span>
+					<Trash2 size={18} />
 					Supprimer
 				</button>
 			)}

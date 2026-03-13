@@ -1,6 +1,7 @@
 import { type Component, For } from "solid-js";
 import { createStore } from "solid-js/store";
 import { PaymentMethodValue } from "./PaymentMethodValue";
+import { CreditCard, HandCoins } from "lucide-solid";
 
 const PAYMENT_METHODS = ["Bank", "Cash"] as const;
 
@@ -152,23 +153,23 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 									value={values.amount}
 									onInput={(e) => onAmountChange(e.currentTarget.value)}
 									placeholder="0.00"
-									class="form-input w-full rounded-lg text-2xl font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
+									class="form-input w-full rounded-lg text-lg font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
 								/>
 							</label>
 
 							{/* Acompte */}
 							<label class="flex flex-col pt-2 border-t border-primary/10 space-y-2">
 								<p class="text-primary font-bold text-sm">Acompte (~30%) *</p>
-								<input
-									type="number"
-									step="0.01"
-									required
-									value={values.deposit}
-									onInput={(e) => onDepositChange(e.currentTarget.value)}
-									placeholder="0.00"
-									class="form-input w-full rounded-lg text-2xl font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
-								/>
-								<div class="grid grid-cols-2 gap-2">
+								<div class="flex gap-2">
+									<input
+										type="number"
+										step="0.01"
+										required
+										value={values.deposit}
+										onInput={(e) => onDepositChange(e.currentTarget.value)}
+										placeholder="0.00"
+										class="form-input w-full rounded-lg text-lg font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
+									/>
 									<For each={PAYMENT_METHODS}>
 										{(method) => (
 											<label class="cursor-pointer">
@@ -181,10 +182,8 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 													class="peer hidden"
 												/>
 												<div class="peer-checked:border-primary peer-checked:border-2 peer-checked:bg-primary peer-checked:text-white flex flex-col items-center justify-center p-3 rounded-xl border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-400 transition-all">
-													<span class="material-symbols-outlined mb-1">
-														{method === "Bank" ? "credit_card" : "money_bag"}
-													</span>
-													<span class="text-xs font-bold">
+													{method === "Bank" ? <CreditCard /> : <HandCoins />}
+													<span class="text-xs font-bold mt-1">
 														<PaymentMethodValue value={method} />
 													</span>
 												</div>
@@ -197,15 +196,15 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 							{/* Solde */}
 							<label class="flex flex-col pt-2 border-t border-primary/10 space-y-2">
 								<p class="text-slate-500 dark:text-slate-400 font-bold text-sm">Solde (70%)</p>
-								<input
-									type="number"
-									step="0.01"
-									readOnly
-									value={values.remaining}
-									placeholder="0.00"
-									class="form-input w-full rounded-lg text-2xl font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
-								/>
-								<div class="grid grid-cols-2 gap-2">
+								<div class="flex gap-2">
+									<input
+										type="number"
+										step="0.01"
+										readOnly
+										value={values.remaining}
+										placeholder="0.00"
+										class="form-input w-full rounded-lg text-lg font-bold bg-white dark:bg-background-dark border-primary/30 text-slate-900 dark:text-white focus:ring-primary px-4 py-3"
+									/>
 									<For each={PAYMENT_METHODS}>
 										{(method) => (
 											<label class="cursor-pointer">
@@ -218,10 +217,8 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 													class="peer hidden"
 												/>
 												<div class="peer-checked:border-primary peer-checked:border-2 peer-checked:bg-primary peer-checked:text-white flex flex-col items-center justify-center p-3 rounded-xl border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-400 transition-all">
-													<span class="material-symbols-outlined mb-1">
-														{method === "Bank" ? "credit_card" : "money_bag"}
-													</span>
-													<span class="text-xs font-bold">
+													{method === "Bank" ? <CreditCard /> : <HandCoins />}
+													<span class="text-xs font-bold mt-1">
 														<PaymentMethodValue value={method} />
 													</span>
 												</div>

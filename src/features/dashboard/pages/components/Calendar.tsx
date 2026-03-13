@@ -2,6 +2,7 @@ import { DAYS_OF_WEEK } from "@common/format";
 import { Link } from "@tanstack/solid-router";
 import type { Component } from "solid-js";
 import type { FindDashboardReturn } from "../../api.functions";
+import { ChevronLeft, ChevronRight } from "lucide-solid";
 
 type CalendarProps = FindDashboardReturn & {
 	onSelectDate: (date: string) => void;
@@ -17,14 +18,14 @@ export const Calendar: Component<CalendarProps> = ({ onSelectDate, ...props }) =
 					search={{ month: props.prevMonth }}
 					class="size-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-white"
 				>
-					<span class="material-symbols-outlined">chevron_left</span>
+					<ChevronLeft />
 				</Link>
 				<Link
 					to="/"
 					search={{ month: props.nextMonth }}
 					class="size-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-white"
 				>
-					<span class="material-symbols-outlined">chevron_right</span>
+					<ChevronRight />
 				</Link>
 			</div>
 		</div>

@@ -2,6 +2,7 @@ import { amount, datetimeLong } from "@common/format";
 import type { Component } from "solid-js";
 import type { FindSaleByIdReturn } from "../../api.functions";
 import { PaymentMethodValue } from "./PaymentMethodValue";
+import { Clock, MapPin } from "lucide-solid";
 
 export const SaleDetails: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) => {
 	return (
@@ -10,8 +11,8 @@ export const SaleDetails: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) =
 				<div class="flex justify-between items-start mb-4">
 					<div>
 						<h3 class="text-xl font-bold text-slate-900 dark:text-white">{sale.clientName}</h3>
-						<p class="text-slate-500 dark:text-[#c9929b] text-sm flex items-center gap-1 mt-1">
-							<span class="material-symbols-outlined text-sm">schedule</span>
+						<p class="text-slate-500 dark:text-[#c9929b] text-sm flex items-center gap-2 mt-1">
+							<Clock size={18} />
 							{datetimeLong(sale.deliveryDatetime)}
 						</p>
 					</div>
@@ -19,9 +20,9 @@ export const SaleDetails: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) =
 				</div>
 
 				{sale.deliveryAddress && (
-					<div class="flex items-center gap-2 py-3 border-t border-slate-100 dark:border-white/5">
-						<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
-						<p class="text-sm text-slate-600 dark:text-[#c9929b]">{sale.deliveryAddress}</p>
+					<div class="flex items-center gap-2 py-3 border-t border-slate-100 dark:border-white/5 text-slate-600 dark:text-[#c9929b]">
+						<MapPin />
+						<p class="text-sm">{sale.deliveryAddress}</p>
 					</div>
 				)}
 

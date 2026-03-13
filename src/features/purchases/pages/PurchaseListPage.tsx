@@ -1,6 +1,7 @@
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
+import { ShoppingBasket } from "lucide-solid";
 import type { Component } from "solid-js";
 import type { FindAllPurchasesReturn } from "../api.functions";
 import { HeaderUploadButton, PurchaseCardContent } from "./components";
@@ -19,7 +20,7 @@ export const PurchaseListPage: Component<{ purchases: FindAllPurchasesReturn }> 
 
 			{purchases.length === 0 ? (
 				<EmptyState
-					emptyIcon="shopping_bag"
+					emptyIcon={<ShoppingBasket />}
 					emptyLabel="Aucun achat trouvé."
 					actionUrl="/purchases/new"
 					actionLabel="Créer un achat"

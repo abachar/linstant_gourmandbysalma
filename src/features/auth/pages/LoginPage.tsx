@@ -2,6 +2,7 @@ import salmaImg from "@assets/images/salma.jpeg";
 import { useMutation } from "@common/hooks";
 import { loginFn } from "@features/auth";
 import { useNavigate } from "@tanstack/solid-router";
+import { CircleX } from "lucide-solid";
 import { type Component, createSignal, Show } from "solid-js";
 
 export const LoginPage: Component = () => {
@@ -35,7 +36,7 @@ export const LoginPage: Component = () => {
 				<div class="space-y-4">
 					<Show when={error()}>
 						<div class="flex gap-2 items-center bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl text-sm">
-							<span class="material-symbols-outlined">error</span>
+							<CircleX size={18} />
 							<span>{error()}</span>
 						</div>
 					</Show>

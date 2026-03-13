@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/solid-router";
-import type { Component } from "solid-js";
+import type { Component, JSXElement } from "solid-js";
 
 type EmptyStateProps = {
-	emptyIcon: string;
+	emptyIcon: JSXElement;
 	emptyLabel: string;
 	actionUrl?: string;
 	actionLabel?: string;
@@ -12,7 +12,7 @@ export const EmptyState: Component<EmptyStateProps> = ({ emptyIcon, emptyLabel, 
 	return (
 		<div class="flex flex-col items-center justify-center py-16 text-center">
 			<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
-				<span class="material-symbols-outlined text-3xl">{emptyIcon}</span>
+				{emptyIcon}
 			</div>
 			<p class="text-slate-500 dark:text-[#c9929b] text-sm mb-4">{emptyLabel}</p>
 			{actionUrl && (

@@ -2,6 +2,7 @@ import { amount, dateShort } from "@common/format";
 import type { Component } from "solid-js";
 import type { FindSalesByRangeReturn } from "../../api.functions";
 import { PaymentMethodValue } from "./PaymentMethodValue";
+import { Clock, MapPin } from "lucide-solid";
 
 export const SaleCardContent: Component<{ sale: FindSalesByRangeReturn["sales"][number] }> = ({ sale }) => {
 	return (
@@ -9,8 +10,8 @@ export const SaleCardContent: Component<{ sale: FindSalesByRangeReturn["sales"][
 			<div class="flex justify-between items-start">
 				<div>
 					<div class="flex items-center gap-2 mb-1">
-						<p class="text-slate-500 dark:text-[#c9929b] text-xs font-medium flex items-center gap-1">
-							<span class="material-symbols-outlined text-sm">schedule</span>
+						<p class="text-slate-500 dark:text-[#c9929b] text-xs font-medium flex items-center gap-2">
+							<Clock size={18} />
 							{dateShort(sale.deliveryDatetime)}
 						</p>
 					</div>
@@ -20,9 +21,9 @@ export const SaleCardContent: Component<{ sale: FindSalesByRangeReturn["sales"][
 			</div>
 
 			{sale.deliveryAddress && (
-				<div class="flex items-start gap-2 py-2 border-y border-slate-50 dark:border-white/5">
-					<span class="material-symbols-outlined text-slate-400 text-lg">location_on</span>
-					<p class="text-sm text-slate-600 dark:text-[#c9929b]">{sale.deliveryAddress}</p>
+				<div class="flex items-start gap-2 py-2 border-y border-slate-50 dark:border-white/5 text-slate-600 dark:text-[#c9929b]">
+					<MapPin size={18} />
+					<p class="text-sm">{sale.deliveryAddress}</p>
 				</div>
 			)}
 

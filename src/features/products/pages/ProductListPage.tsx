@@ -1,6 +1,7 @@
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
+import { Refrigerator } from "lucide-solid";
 import type { Component } from "solid-js";
 import type { FindAllProductsReturn } from "../api.functions";
 import { ProductCardContent } from "./components";
@@ -20,7 +21,7 @@ export const ProductListPage: Component<{ products: FindAllProductsReturn }> = (
 
 			{products.length === 0 ? (
 				<EmptyState
-					emptyIcon="inventory_2"
+					emptyIcon={<Refrigerator />}
 					emptyLabel="Aucun produit en stock."
 					actionUrl="/products/new"
 					actionLabel="Ajouter le premier produit"

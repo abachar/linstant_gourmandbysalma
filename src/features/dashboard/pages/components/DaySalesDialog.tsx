@@ -1,5 +1,6 @@
 import { amount, datetimeLong } from "@common/format";
 import { Link } from "@tanstack/solid-router";
+import { X } from "lucide-solid";
 import { type Component, createResource, For, Show } from "solid-js";
 import { findDaySalesFn } from "../../api.functions";
 
@@ -22,7 +23,7 @@ export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = 
 						onClick={onClose}
 						class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-white/60"
 					>
-						<span class="material-symbols-outlined">close</span>
+						<X />
 					</button>
 				</div>
 				<div class="p-4 max-h-[60vh] overflow-y-auto">
