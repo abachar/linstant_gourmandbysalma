@@ -25,8 +25,8 @@ const NavigationLink: Component<{
 };
 
 export const BottomNavigation: Component = () => (
-	<nav class="fixed bottom-0 left-0 right-0 ios-tab-bar bg-white/90 dark:bg-background-dark/90 border-t border-slate-200 dark:border-white/5 pb-6 pt-2 z-50">
-		<div class="flex justify-between items-center max-w-md mx-auto px-6">
+	<nav class="fixed bottom-0 left-0 right-0 ios-tab-bar bg-white/90 dark:bg-background-dark/90 border-t border-slate-200 dark:border-white/5 py-4 z-50">
+		<div class="grid grid-cols-5 px-2">
 			<NavigationLink href="/" label="Dashboard" icon={<LayoutDashboard />} />
 			<NavigationLink href="/sales" label="Ventes" icon={<ShoppingBag />} />
 			<NavigationLink href="/purchases" label="Achats" icon={<ShoppingBasket />} />
