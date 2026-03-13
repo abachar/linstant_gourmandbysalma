@@ -17,9 +17,7 @@
 	"license": "ISC",
 	"description": "",
 	"dependencies": {
-		"@tanstack/solid-query": "^5.90.23",
 		"@tanstack/solid-router": "^1.166.6",
-		"@tanstack/solid-router-ssr-query": "^1.166.6",
 		"@tanstack/solid-start": "^1.166.6",
 		"@tanstack/zod-adapter": "^1.166.6",
 		"better-auth": "^1.5.4",
