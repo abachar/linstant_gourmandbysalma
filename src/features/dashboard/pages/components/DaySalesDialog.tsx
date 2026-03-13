@@ -1,17 +1,12 @@
 import { amount, datetimeLong } from "@common/format";
-import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { Link } from "@tanstack/solid-router";
-import { useServerFn } from "@tanstack/solid-start";
-import { type Component, For } from "solid-js";
+import { type Component, createResource, For, Show } from "solid-js";
 import { findDaySalesFn } from "../../api.functions";
 
 export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = ({ date, onClose }) => {
-	const findDaySales = useServerFn(findDaySalesFn);
-	const res = useQuery(() =>
-		queryOptions({
-			queryKey: ["dashboard", "sales", date],
-			queryFn: () => findDaySales({ data: { date } }),
-		}),
+	const [sales] = createResource(
+		() => date,
+		(date) => findDaySalesFn({ data: { date } }),
 	);
 
 	return (
@@ -31,28 +26,29 @@ export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = 
 					</button>
 				</div>
 				<div class="p-4 max-h-[60vh] overflow-y-auto">
-					{res.isLoading && <p class="text-slate-400 text-sm text-center py-4">Chargement...</p>}
-					<div class="space-y-3">
-						<For each={res.data}>
-							{(sale) => (
-								<Link
-									to="/sales/$id"
-									params={{ id: sale.id }}
-									class="block p-3 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-								>
-									<div class="flex justify-between items-start">
-										<div>
-											<p class="font-bold text-slate-900 dark:text-white text-sm">{sale.clientName}</p>
-											<p class="text-xs text-slate-500 dark:text-[#c9929b] mt-0.5">
-												{datetimeLong(sale.deliveryDatetime)}
-											</p>
+					<Show when={!sales.loading} fallback={<p class="text-slate-400 text-sm text-center py-4">Chargement...</p>}>
+						<div class="space-y-3">
+							<For each={sales()}>
+								{(sale) => (
+									<Link
+										to="/sales/$id"
+										params={{ id: sale.id }}
+										class="block p-3 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+									>
+										<div class="flex justify-between items-start">
+											<div>
+												<p class="font-bold text-slate-900 dark:text-white text-sm">{sale.clientName}</p>
+												<p class="text-xs text-slate-500 dark:text-[#c9929b] mt-0.5">
+													{datetimeLong(sale.deliveryDatetime)}
+												</p>
+											</div>
+											<p class="font-bold text-slate-900 dark:text-white text-sm">{amount(sale.amount)}</p>
 										</div>
-										<p class="font-bold text-slate-900 dark:text-white text-sm">{amount(sale.amount)}</p>
-									</div>
-								</Link>
-							)}
-						</For>
-					</div>
+									</Link>
+								)}
+							</For>
+						</div>
+					</Show>
 				</div>
 			</dialog>
 		</div>

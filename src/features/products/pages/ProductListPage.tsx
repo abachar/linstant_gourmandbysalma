@@ -1,4 +1,3 @@
-import { HeaderAddButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
@@ -13,7 +12,7 @@ export const ProductListPage: Component<{ products: FindAllProductsReturn }> = (
 	const onDeleteClick = () => {};
 
 	return (
-		<PageLayout title="Stock" action={<HeaderAddButton to="/products/new" />}>
+		<PageLayout title="Stock" addUrl="/products/new">
 			<div class="flex items-center justify-between mb-3 px-1">
 				<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Stock Actuel</h2>
 				<span class="text-xs font-medium text-slate-400">{products.length} Produits</span>

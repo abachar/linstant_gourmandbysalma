@@ -1,5 +1,4 @@
 import { formatDatetimeLocal } from "@common/format/date";
-import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
@@ -41,7 +40,7 @@ export const SaleEditPage: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) 
 	}
 
 	return (
-		<PageLayout title="Modifier vente" action={<HeaderCancelButton />}>
+		<PageLayout title="Modifier vente" withCancel={true}>
 			<SaleForm
 				initialValues={initialValues}
 				onSubmit={handleSubmit}

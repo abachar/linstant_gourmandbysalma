@@ -1,5 +1,12 @@
 import { createServerFn } from "@tanstack/solid-start";
-import { createPurchase, deletePurchaseById, findAllPurchases, findPurchaseById, updatePurchase } from "./api.server";
+import {
+	createPurchase,
+	deletePurchaseById,
+	findAllPurchases,
+	findPurchaseById,
+	importPurchasesFromCsv,
+	updatePurchase,
+} from "./api.server";
 
 export const findAllPurchasesFn = createServerFn({ method: "GET" }).handler(findAllPurchases);
 
@@ -22,3 +29,7 @@ export const updatePurchaseFn = createServerFn({ method: "POST" })
 export const deletePurchaseByIdFn = createServerFn({ method: "POST" })
 	.inputValidator((data: { id: string }) => data)
 	.handler(async ({ data }) => deletePurchaseById(data.id));
+
+export const importPurchasesFromCsvFn = createServerFn({ method: "POST" })
+	.inputValidator((data: { content: string }) => data)
+	.handler(async ({ data }) => importPurchasesFromCsv(data.content));

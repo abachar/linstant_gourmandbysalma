@@ -53,13 +53,13 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit} class="space-y-6 -mx-4">
+		<form onSubmit={handleSubmit} class="space-y-6">
 			{/* Client */}
 			<div>
-				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2">
+				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2">
 					Informations Client
 				</h3>
-				<div class="flex flex-col gap-4 px-4 py-3">
+				<div class="flex flex-col gap-4">
 					<label class="flex flex-col">
 						<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Nom du client <span class="text-primary">*</span>
@@ -90,10 +90,10 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 
 			{/* Logistique */}
 			<div>
-				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2">
+				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2">
 					Logistique
 				</h3>
-				<div class="px-4 py-3">
+				<div>
 					<label class="flex flex-col">
 						<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Date et heure de livraison <span class="text-primary">*</span>
@@ -113,10 +113,10 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 
 			{/* Commande */}
 			<div>
-				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2">
+				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2">
 					Détails Commande
 				</h3>
-				<div class="px-4 py-3">
+				<div>
 					<label class="flex flex-col">
 						<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Description des produits
@@ -134,10 +134,10 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 
 			{/* Paiement */}
 			<div>
-				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2">
+				<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2">
 					Paiement
 				</h3>
-				<div class="px-4 py-3 space-y-6">
+				<div class="space-y-6">
 					<div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-5 border border-primary/20">
 						<div class="space-y-4">
 							{/* Montant total */}
@@ -236,7 +236,7 @@ export const SaleForm: Component<SaleFormProps> = (props) => {
 			</div>
 
 			{/* Fixed Footer */}
-			<div class="fixed bottom-20 left-0 right-0 p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-lg border-t border-slate-200 dark:border-[#67323b] flex gap-3 z-30">
+			<div class="flex gap-3 pt-4">
 				<a
 					href={props.cancelHref}
 					class="flex-1 h-14 rounded-xl border border-slate-300 dark:border-[#67323b] text-slate-700 dark:text-white font-bold text-base flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"

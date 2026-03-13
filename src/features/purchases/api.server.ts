@@ -1,4 +1,6 @@
+import { createHash } from "node:crypto";
 import { db, purchases } from "@common/db";
+import { parse } from "csv-parse/sync";
 import { desc, eq } from "drizzle-orm";
 
 export async function findAllPurchases() {
@@ -8,7 +10,44 @@ export async function findAllPurchases() {
 		date: s.date,
 		description: s.description,
 		amount: s.amount,
+		isImported: s.importRef !== null,
+		createdAt: s.createdAt,
 	}));
+}
+
+export async function importPurchasesFromCsv(csvText: string) {
+	console.log("Import purchases from Revolut");
+
+	const records = parse<{ Type: string; "Date de début": string; Description: string; Montant: string }>(csvText, {
+		columns: true,
+		skip_empty_lines: true,
+		relax_column_count: true,
+	});
+
+	console.log("Parsed", records.length, "records");
+
+	const rows = records
+		.filter((record) => ["Paiement par carte", "Remboursement sur carte"].includes(record.Type))
+		.map((record) => ({
+			date: record["Date de début"].split(" ")[0] ?? "",
+			amount: (Number(record.Montant) * -1).toFixed(2),
+			description: record.Description,
+		}))
+		.map((row) => ({
+			...row,
+			date: new Date(row.date),
+			importRef: createHash("sha256").update(`${row.date}|${row.amount}|${row.description}`).digest("hex"),
+		}));
+
+	console.log("Found", records, "paiments");
+
+	const result = await db
+		.insert(purchases)
+		.values(rows)
+		.onConflictDoNothing({ target: purchases.importRef })
+		.returning({ id: purchases.id });
+
+	console.log("Inserted", result.length, "rows");
 }
 
 export async function findPurchaseById(id: string) {

@@ -1,4 +1,3 @@
-import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
@@ -38,7 +37,7 @@ export const SaleCreatePage: Component = () => {
 	}
 
 	return (
-		<PageLayout title="Nouvelle vente" action={<HeaderCancelButton />}>
+		<PageLayout title="Nouvelle vente" withCancel={true}>
 			<SaleForm
 				initialValues={initialValues}
 				onSubmit={handleSubmit}

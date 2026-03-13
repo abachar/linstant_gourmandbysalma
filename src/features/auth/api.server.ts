@@ -54,27 +54,23 @@ async function createSessionToken() {
 }
 
 export async function login(email: string, password: string) {
-	try {
-		if (!verifyEmail(email)) {
-			throw new Error("Adresse mail incorrect");
-		}
-
-		const isValid = await verifyPassword(password);
-		if (!isValid) {
-			throw new Error("Mot de passe incorrect");
-		}
-
-		const token = await createSessionToken();
-		setCookie(COOKIE_NAME, token, {
-			httpOnly: true,
-			sameSite: "lax",
-			path: "/",
-			maxAge: MAX_AGE_SECONDS,
-			secure: process.env.NODE_ENV === "production",
-		});
-	} catch (e) {
-		console.error("error login", e);
+	if (!verifyEmail(email)) {
+		throw new Error("Email ou mot de passe incorrect.");
 	}
+
+	const isValid = await verifyPassword(password);
+	if (!isValid) {
+		throw new Error("Email ou mot de passe incorrect.");
+	}
+
+	const token = await createSessionToken();
+	setCookie(COOKIE_NAME, token, {
+		httpOnly: true,
+		sameSite: "lax",
+		path: "/",
+		maxAge: MAX_AGE_SECONDS,
+		secure: process.env.NODE_ENV === "production",
+	});
 }
 
 async function verifySessionToken(token: string | undefined) {

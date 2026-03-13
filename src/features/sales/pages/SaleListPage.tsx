@@ -1,4 +1,3 @@
-import { HeaderAddButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
@@ -12,7 +11,7 @@ export const SaleListPage: Component<FindSalesByRangeReturn> = ({ sales, selecte
 		navigate({ to: `/sales/$id`, params: { id: sale.id } });
 
 	return (
-		<PageLayout title="Ventes" action={<HeaderAddButton to="/sales/new" />}>
+		<PageLayout title="Ventes" addUrl="/sales/new">
 			<SaleListFilter selectedFilter={selectedFilter} />
 
 			{sales.length === 0 ? (

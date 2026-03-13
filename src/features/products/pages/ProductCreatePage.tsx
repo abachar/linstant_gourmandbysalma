@@ -1,4 +1,3 @@
-import { HeaderCancelButton } from "@components/buttons";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/solid-router";
 import { type Component, createSignal } from "solid-js";
@@ -24,7 +23,7 @@ export const ProductCreatePage: Component = () => {
 	}
 
 	return (
-		<PageLayout title="Ajouter au stock" action={<HeaderCancelButton />}>
+		<PageLayout title="Ajouter au stock" withCancel={true}>
 			<form onSubmit={handleSubmit} class="space-y-6">
 				<div class="space-y-4">
 					<label class="flex flex-col">

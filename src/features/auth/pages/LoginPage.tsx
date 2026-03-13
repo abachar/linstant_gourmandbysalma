@@ -1,17 +1,21 @@
 import salmaImg from "@assets/images/salma.jpeg";
+import { useMutation } from "@common/hooks";
 import { loginFn } from "@features/auth";
-import { useMutation } from "@tanstack/solid-query";
 import { useNavigate } from "@tanstack/solid-router";
-import { type Component, createSignal } from "solid-js";
+import { type Component, createSignal, Show } from "solid-js";
 
 export const LoginPage: Component = () => {
 	const [email, setEmail] = createSignal("");
 	const [password, setPassword] = createSignal("");
 	const navigate = useNavigate();
-	const login = useMutation(() => ({
-		mutationFn: (data: { email: string; password: string }) => loginFn({ data }),
+	const {
+		mutate: login,
+		isLoading,
+		error,
+	} = useMutation({
+		fn: loginFn,
 		onSuccess: () => navigate({ to: "/" }),
-	}));
+	});
 
 	return (
 		<div class="flex items-center justify-center p-4 pt-40">
@@ -29,12 +33,12 @@ export const LoginPage: Component = () => {
 				</div>
 
 				<div class="space-y-4">
-					{login.error && (
+					<Show when={error()}>
 						<div class="flex gap-2 items-center bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl text-sm">
 							<span class="material-symbols-outlined">error</span>
-							<span>{login.error.message}</span>
+							<span>{error()}</span>
 						</div>
-					)}
+					</Show>
 
 					<input
 						type="text"
@@ -58,11 +62,11 @@ export const LoginPage: Component = () => {
 
 					<button
 						type="submit"
-						disabled={login.isPending}
-						onClick={() => login.mutate({ email: email(), password: password() })}
+						disabled={isLoading()}
+						onClick={() => login({ data: { email: email(), password: password() } })}
 						class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-xl transition-colors disabled:opacity-50"
 					>
-						{login.isPending ? "Connexion..." : "Se connecter"}
+						{isLoading() ? "Connexion..." : "Se connecter"}
 					</button>
 				</div>
 			</div>
