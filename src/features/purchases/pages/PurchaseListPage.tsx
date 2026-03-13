@@ -4,21 +4,19 @@ import { useNavigate } from "@tanstack/solid-router";
 import { ShoppingBasket } from "lucide-solid";
 import type { Component } from "solid-js";
 import type { FindAllPurchasesReturn } from "../api.functions";
-import { HeaderUploadButton, PurchaseCardContent } from "./components";
+import { HeaderUploadButton, PurchaseCardContent, PurchaseListFilter } from "./components";
 
-export const PurchaseListPage: Component<{ purchases: FindAllPurchasesReturn }> = ({ purchases }) => {
+export const PurchaseListPage: Component<FindAllPurchasesReturn> = (props) => {
 	const navigate = useNavigate();
-	const onEditClick = (purchase: FindAllPurchasesReturn[number]) =>
+	const onEditClick = (purchase: FindAllPurchasesReturn["purchases"][number]) =>
 		navigate({ to: `/purchases/$id/edit`, params: { id: purchase.id } });
 	const onDeleteClick = () => {};
 
 	return (
 		<PageLayout title="Achats" addUrl="/purchases/new" moreActions={<HeaderUploadButton />}>
-			<div class="flex items-center justify-between mb-3 px-1">
-				<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Liste des achats</h2>
-			</div>
+			<PurchaseListFilter availableYears={props.availableYears} selectedYear={props.selectedYear} />
 
-			{purchases.length === 0 ? (
+			{props.purchases.length === 0 ? (
 				<EmptyState
 					emptyIcon={<ShoppingBasket />}
 					emptyLabel="Aucun achat trouvé."
@@ -26,7 +24,7 @@ export const PurchaseListPage: Component<{ purchases: FindAllPurchasesReturn }> 
 					actionLabel="Créer un achat"
 				/>
 			) : (
-				<CardList rows={purchases} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
+				<CardList rows={props.purchases} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
 					{(purchase) => <PurchaseCardContent purchase={purchase} />}
 				</CardList>
 			)}

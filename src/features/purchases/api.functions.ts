@@ -8,9 +8,11 @@ import {
 	updatePurchase,
 } from "./api.server";
 
-export const findAllPurchasesFn = createServerFn({ method: "GET" }).handler(findAllPurchases);
+export const findAllPurchasesFn = createServerFn({ method: "GET" })
+	.inputValidator((data: { year: number }) => data)
+	.handler(async ({ data }) => findAllPurchases(data.year));
 
-export type FindAllPurchasesReturn = Awaited<ReturnType<typeof findAllPurchasesFn>>;
+export type FindAllPurchasesReturn = Awaited<ReturnType<typeof findAllPurchases>>;
 
 export const findPurchaseByIdFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { id: string }) => data)

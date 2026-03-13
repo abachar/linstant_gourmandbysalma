@@ -1,18 +1,34 @@
 import { createHash } from "node:crypto";
 import { db, purchases } from "@common/db";
 import { parse } from "csv-parse/sync";
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 
-export async function findAllPurchases() {
-	const result = await db.select().from(purchases).orderBy(desc(purchases.date));
-	return result.map((s) => ({
-		id: s.id,
-		date: s.date,
-		description: s.description,
-		amount: s.amount,
-		isImported: s.importRef !== null,
-		createdAt: s.createdAt,
-	}));
+async function getAvailableYears() {
+	const result = await db
+		.select({ year: sql<number>`EXTRACT(YEAR FROM ${purchases.date})::int` })
+		.from(purchases)
+		.groupBy(sql`EXTRACT(YEAR FROM ${purchases.date})`)
+		.orderBy(sql`EXTRACT(YEAR FROM ${purchases.date}) DESC`);
+	return result.map((r) => r.year);
+}
+
+export async function findAllPurchases(year: number) {
+	const result = await db
+		.select()
+		.from(purchases)
+		.where(sql`EXTRACT(YEAR FROM ${purchases.date}) = ${year}`)
+		.orderBy(desc(purchases.date));
+	return {
+		selectedYear: year,
+		availableYears: await getAvailableYears(),
+		purchases: result.map((s) => ({
+			id: s.id,
+			date: s.date,
+			description: s.description,
+			amount: s.amount,
+			isImported: s.importRef !== null,
+		})),
+	};
 }
 
 export async function importPurchasesFromCsv(csvText: string) {
