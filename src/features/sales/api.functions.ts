@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/solid-start";
 import { addDays, addYears, endOfDay, endOfMonth, startOfDay, startOfMonth, subDays } from "date-fns";
-import { createSale, findSaleById, findSalesByRange, updateSale } from "./api.server";
+import { createSale, deleteSaleById, findSaleById, findSalesByRange, updateSale } from "./api.server";
 
 function validFilter(filter: string) {
 	return ["upcoming", "month", "past", "all"].includes(filter) ? filter : "upcoming";
@@ -58,6 +58,10 @@ export const createSaleFn = createServerFn({ method: "POST" })
 		}) => data,
 	)
 	.handler(async ({ data }) => createSale(data));
+
+export const deleteSaleByIdFn = createServerFn({ method: "POST" })
+	.inputValidator((data: { id: string }) => data)
+	.handler(async ({ data }) => deleteSaleById(data.id));
 
 export const updateSaleFn = createServerFn({ method: "POST" })
 	.inputValidator(

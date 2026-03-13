@@ -1,16 +1,27 @@
+import { useMutation } from "@common/hooks";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
 import { Refrigerator } from "lucide-solid";
 import type { Component } from "solid-js";
-import type { FindAllProductsReturn } from "../api.functions";
+import { deleteProductByIdFn, type FindAllProductsReturn } from "../api.functions";
 import { ProductCardContent } from "./components";
+
+type Product = FindAllProductsReturn[number];
 
 export const ProductListPage: Component<{ products: FindAllProductsReturn }> = ({ products }) => {
 	const navigate = useNavigate();
-	const onEditClick = (product: FindAllProductsReturn[number]) =>
-		navigate({ to: `/products/$id/edit`, params: { id: product.id } });
-	const onDeleteClick = () => {};
+	const { mutate: deleteProduct } = useMutation({
+		fn: deleteProductByIdFn,
+		onSuccess: () => window.location.reload(),
+	});
+
+	const onEditClick = (product: Product) => navigate({ to: `/products/$id/edit`, params: { id: product.id } });
+
+	const onDeleteClick = (product: Product) => {
+		if (!confirm("Supprimer ce produit ?")) return;
+		deleteProduct({ data: { id: product.id } });
+	};
 
 	return (
 		<PageLayout title="Stock" addUrl="/products/new">

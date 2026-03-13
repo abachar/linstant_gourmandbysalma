@@ -22,6 +22,10 @@ export async function createProduct(data: { productName: string; quantity: numbe
 	return { id: result.id };
 }
 
+export async function deleteProductById(id: string) {
+	await db.delete(products).where(eq(products.id, id));
+}
+
 export async function updateProduct(data: { id: string; productName: string; quantity: number }) {
 	await db
 		.update(products)

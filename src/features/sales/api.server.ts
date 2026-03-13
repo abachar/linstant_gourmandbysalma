@@ -45,6 +45,10 @@ export async function createSale(data: SaleData) {
 	return { id: result.id };
 }
 
+export async function deleteSaleById(id: string) {
+	await db.delete(sales).where(eq(sales.id, id));
+}
+
 export async function updateSale(data: SaleData & { id: string }) {
 	await db
 		.update(sales)

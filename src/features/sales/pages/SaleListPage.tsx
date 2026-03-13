@@ -1,15 +1,27 @@
+import { useMutation } from "@common/hooks";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
 import { useNavigate } from "@tanstack/solid-router";
 import { ShoppingBag } from "lucide-solid";
 import type { Component } from "solid-js";
-import type { FindSalesByRangeReturn } from "../api.functions";
+import { deleteSaleByIdFn, type FindSalesByRangeReturn } from "../api.functions";
 import { SaleCardContent, SaleListFilter } from "./components";
+
+type Sale = FindSalesByRangeReturn["sales"][number];
 
 export const SaleListPage: Component<FindSalesByRangeReturn> = ({ sales, selectedFilter }) => {
 	const navigate = useNavigate();
-	const onCardClick = (sale: FindSalesByRangeReturn["sales"][number]) =>
-		navigate({ to: `/sales/$id`, params: { id: sale.id } });
+	const { mutate: deleteSale } = useMutation({
+		fn: deleteSaleByIdFn,
+		onSuccess: () => window.location.reload(),
+	});
+
+	const onCardClick = (sale: Sale) => navigate({ to: `/sales/$id`, params: { id: sale.id } });
+
+	const onDeleteClick = (sale: Sale) => {
+		if (!confirm("Supprimer cette vente ?")) return;
+		deleteSale({ data: { id: sale.id } });
+	};
 
 	return (
 		<PageLayout title="Ventes" addUrl="/sales/new">
@@ -23,7 +35,7 @@ export const SaleListPage: Component<FindSalesByRangeReturn> = ({ sales, selecte
 					actionLabel="Créer une vente"
 				/>
 			) : (
-				<CardList rows={sales} onCardClick={onCardClick}>
+				<CardList rows={sales} onCardClick={onCardClick} onDeleteClick={onDeleteClick}>
 					{(sale) => <SaleCardContent sale={sale} />}
 				</CardList>
 			)}
