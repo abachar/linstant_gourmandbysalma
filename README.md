@@ -107,5 +107,19 @@ Accès protégé par mot de passe unique. La session est stockée dans un cookie
 
 ## Backlog
 
-- Supprimer le type `SaleData` et utiliser inference types drizzle et zod
-- Utiliser des schémas Zod dans les `inputValidator` des server functions
+### Phase 1 — Quick Wins
+
+- [ ] Ajouter la validation Zod sur les `inputValidator` des server functions
+- [ ] Utiliser un `pgEnum` Drizzle pour les méthodes de paiement (`Bank` / `Cash`)
+- [ ] Passer TypeScript en mode `strict: true`
+- [ ] Supprimer le champ `quoteGeneratedAt`
+
+### Phase 2 — Amélioration UX & Technique
+
+- [ ] Remplacer `window.location.reload()` par des invalidations de cache (TanStack Query)
+- [ ] Gestion d'erreurs structurée : `ErrorBoundary`, messages utilisateur (toasts)
+
+### Phase 3 — Avancé
+
+- [ ] Tests unitaires et d'intégration (Vitest) + ajout au CI
+- [ ] Rate limiting sur le login (protection brute-force)
