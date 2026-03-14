@@ -117,7 +117,3 @@ Accès protégé par mot de passe unique. La session est stockée dans un cookie
 
 - [ ] Remplacer `window.location.reload()` par des invalidations de cache (TanStack Query)
 - [ ] Gestion d'erreurs structurée : `ErrorBoundary`, messages utilisateur (toasts)
-
-### Phase 3 — Avancé
-
-- [ ] Rate limiting sur le login (protection brute-force)
