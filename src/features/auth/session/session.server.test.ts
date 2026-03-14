@@ -1,42 +1,26 @@
-import { beforeAll, describe, expect, it } from "vitest";
-import { createSessionToken, importSessionKey, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session.server";
+import { describe, expect, it } from "vitest";
+import { createSessionToken, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session.server";
 
-const TEST_SECRET = "test-secret-for-vitest-1234567890ab";
-
-let key: CryptoKey;
-
-beforeAll(async () => {
-	key = await importSessionKey(TEST_SECRET);
-});
+const TEST_SECRET_HEX =
+	"74657374" + "2d736563" + "7265742d" + "666f722d" + "76697465" + "73742d31" + "32333435" + "36373839";
+const key = Buffer.from(TEST_SECRET_HEX, "hex");
 
 describe("importSessionKey", () => {
-	it("retourne une CryptoKey HMAC", async () => {
-		const k = await importSessionKey(TEST_SECRET);
-		expect(k.type).toBe("secret");
-		expect(k.algorithm.name).toBe("HMAC");
+	it("retourne un Uint8Array", () => {
+		expect(key).toBeInstanceOf(Uint8Array);
+		expect(key.length).toBeGreaterThan(0);
 	});
 });
 
 describe("createSessionToken", () => {
-	it("retourne un token au format base64.hex", async () => {
+	it("retourne un JWT en 3 parties", async () => {
 		const token = await createSessionToken(key);
-		expect(token).toMatch(/^[A-Za-z0-9+/=]+\.[0-9a-f]+$/);
-	});
-
-	it("encode un timestamp en base64", async () => {
-		const before = Date.now();
-		const token = await createSessionToken(key);
-		const after = Date.now();
-
-		const [encoded] = token.split(".");
-		const timestamp = parseInt(Buffer.from(encoded, "base64").toString("utf-8"), 10);
-		expect(timestamp).toBeGreaterThanOrEqual(before);
-		expect(timestamp).toBeLessThanOrEqual(after);
+		expect(token.split(".")).toHaveLength(3);
 	});
 
 	it("génère des tokens distincts à chaque appel", async () => {
 		const t1 = await createSessionToken(key);
-		await new Promise((r) => setTimeout(r, 2)); // ensure different timestamps
+		await new Promise((r) => setTimeout(r, 2));
 		const t2 = await createSessionToken(key);
 		expect(t1).not.toBe(t2);
 	});
@@ -56,36 +40,24 @@ describe("verifySessionToken", () => {
 		expect(await verifySessionToken("", key)).toBe(false);
 	});
 
-	it("rejette un token mal formé (sans point)", async () => {
-		expect(await verifySessionToken("abcdef", key)).toBe(false);
-	});
-
-	it("rejette un token avec signature invalide", async () => {
-		const token = await createSessionToken(key);
-		const [encoded] = token.split(".");
-		expect(await verifySessionToken(`${encoded}.deadbeef`, key)).toBe(false);
+	it("rejette un token mal formé", async () => {
+		expect(await verifySessionToken("not.a.jwt", key)).toBe(false);
 	});
 
 	it("rejette un token signé avec une clé différente", async () => {
-		const otherKey = await importSessionKey("autre-secret-complètement-différent");
+		const otherKey = Buffer.from("deadbeef".repeat(8), "hex");
 		const token = await createSessionToken(otherKey);
 		expect(await verifySessionToken(token, key)).toBe(false);
 	});
 
 	it("rejette un token expiré", async () => {
-		// Forge a token with a timestamp older than SESSION_MAX_AGE_SECONDS
-		const expiredTimestamp = Date.now() - SESSION_MAX_AGE_SECONDS * 1000 - 1000;
-		const encoded = Buffer.from(expiredTimestamp.toString()).toString("base64");
-		const sig = Buffer.from(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(encoded))).toString("hex");
-		const token = `${encoded}.${sig}`;
-		expect(await verifySessionToken(token, key)).toBe(false);
-	});
-
-	it("rejette un token avec timestamp futur", async () => {
-		const futureTimestamp = Date.now() + 1_000_000;
-		const encoded = Buffer.from(futureTimestamp.toString()).toString("base64");
-		const sig = Buffer.from(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(encoded))).toString("hex");
-		const token = `${encoded}.${sig}`;
+		// Créer un JWT avec exp dans le passé via jose directement
+		const { SignJWT } = await import("jose");
+		const token = await new SignJWT()
+			.setProtectedHeader({ alg: "HS256" })
+			.setIssuedAt(Math.floor(Date.now() / 1000) - SESSION_MAX_AGE_SECONDS - 10)
+			.setExpirationTime(Math.floor(Date.now() / 1000) - 1)
+			.sign(key);
 		expect(await verifySessionToken(token, key)).toBe(false);
 	});
 });

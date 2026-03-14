@@ -1,19 +1,17 @@
 import { scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
-import { getCookie, setCookie } from "@tanstack/solid-start/server";
-import { createSessionToken, importSessionKey, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session";
+import { getCookie, getRequestIP, setCookie } from "@tanstack/solid-start/server";
+import { RateLimiterMemory } from "rate-limiter-flexible";
+import { createSessionToken, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session";
 
+const rateLimiter = new RateLimiterMemory({ points: 5, duration: 15 * 60 });
 const scryptAsync = promisify(scrypt);
 const COOKIE_NAME = "auth_session";
 
-let _sessionKey: CryptoKey | null = null;
-async function getSessionKey() {
-	if (_sessionKey) return _sessionKey;
-
-	const secret = process.env.SESSION_SECRET_HEX;
-	if (!secret) throw new Error("SESSION_SECRET_HEX is not set");
-	_sessionKey = await importSessionKey(secret);
-	return _sessionKey;
+function getSessionKey(): Uint8Array {
+	const secretHex = process.env.SESSION_SECRET_HEX;
+	if (!secretHex) throw new Error("SESSION_SECRET_HEX is not set");
+	return Buffer.from(secretHex, "hex");
 }
 
 function getStoredPassword() {
@@ -43,16 +41,26 @@ async function verifyPassword(password: string) {
 }
 
 export async function login(email: string, password: string) {
-	if (!verifyEmail(email)) {
+	const ip = getRequestIP({ xForwardedFor: true }) ?? "unknown";
+
+	try {
+		await rateLimiter.consume(ip);
+	} catch (e: unknown) {
+		const msBeforeNext = (e as { msBeforeNext?: number }).msBeforeNext ?? 0;
+		const remainingMin = Math.ceil(msBeforeNext / 60000);
+		throw new Error(`Trop de tentatives. Réessayez dans ${remainingMin} minute${remainingMin > 1 ? "s" : ""}.`);
+	}
+
+	const emailValid = verifyEmail(email);
+	const passwordValid = emailValid && (await verifyPassword(password));
+
+	if (!emailValid || !passwordValid) {
 		throw new Error("Email ou mot de passe incorrect.");
 	}
 
-	const isValid = await verifyPassword(password);
-	if (!isValid) {
-		throw new Error("Email ou mot de passe incorrect.");
-	}
+	await rateLimiter.delete(ip);
 
-	const key = await getSessionKey();
+	const key = getSessionKey();
 	const token = await createSessionToken(key);
 	setCookie(COOKIE_NAME, token, {
 		httpOnly: true,
@@ -66,7 +74,7 @@ export async function login(email: string, password: string) {
 export async function getSession() {
 	try {
 		const token = getCookie(COOKIE_NAME);
-		const key = await getSessionKey();
+		const key = getSessionKey();
 		return { authenticated: await verifySessionToken(token, key) };
 	} catch (e) {
 		console.error(e);
