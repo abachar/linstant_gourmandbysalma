@@ -17,7 +17,6 @@ Site d'administration des commandes / achats pour traiteur spécialisé en petit
 | Runtime | Node.js + [pnpm](https://pnpm.io) |
 | Framework | [TanStack Start](https://tanstack.com/start) + [Solid.js](https://www.solidjs.com) (SSR) |
 | Routing | TanStack Solid Router (file-based) |
-| Data fetching | TanStack Solid Query |
 | ORM | Drizzle ORM |
 | Base de données | PostgreSQL |
 | CSS | Tailwind CSS v4 |
@@ -45,12 +44,13 @@ Renseigner les variables dans `.env` :
 # URL de connexion PostgreSQL
 DATABASE_URL=postgresql://DB_USERNAME:DB_PASSWORD@DB_HOST:DB_PORT/DB_NAME
 
-# Hash du mot de passe de l'application
-# Générer avec : node -e "const c=require('crypto');console.log(c.createHash('sha256').update('VOTRE_MOT_DE_PASSE').digest('hex'))"
-APP_PASSWORD_HEX=YOUR_PASSWORD_HASHED
+# Email et mot de passe administrateur
+# Générer avec : node -e "const {scrypt,randomBytes}=require('crypto'),{promisify}=require('util'),s=promisify(scrypt),salt=randomBytes(16).toString('hex');s('YOUR_PASSWORD',salt,64).then(h=>console.log(salt+':'+h.toString('hex')))"
+APP_ADMIN_EMAIL=root@admin.fr
+APP_ADMIN_PASSWORD_HEX=YOUR_PASSWORD_HASHED
 
 # Clé secrète de session
-# Générer avec : node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+# Générer avec : pnpm dlx auth@latest secret
 SESSION_SECRET_HEX=YOUR_GENERATED_SECRET
 ```
 
@@ -80,7 +80,8 @@ src/
 │   ├── db/
 │   │   ├── schema.ts        # Schéma Drizzle (sales, purchases, products)
 │   │   └── index.ts
-│   └── format/              # Formateurs de dates et montants (français)
+│   ├── format/              # Formateurs de dates et montants (français)
+│   └── hooks/               # Hooks partagés (useMutation, etc.)
 ├── features/
 │   ├── auth/                # Authentification (session cookie HMAC)
 │   ├── dashboard/           # Tableau de bord
