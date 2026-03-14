@@ -15,7 +15,6 @@ export const sales = pgTable(
 		depositPaymentMethod: text("deposit_payment_method").notNull(),
 		remaining: numeric("remaining", { precision: 10, scale: 2 }).notNull(),
 		remainingPaymentMethod: text("remaining_payment_method").notNull(),
-		quoteGeneratedAt: timestamp("quote_generated_at", { withTimezone: true }),
 		createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 	},
 	(t) => [index("idx_sales_delivery_datetime").on(t.deliveryDatetime)],

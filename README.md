@@ -112,7 +112,6 @@ Accès protégé par mot de passe unique. La session est stockée dans un cookie
 - [ ] Ajouter la validation Zod sur les `inputValidator` des server functions
 - [ ] Utiliser un `pgEnum` Drizzle pour les méthodes de paiement (`Bank` / `Cash`)
 - [ ] Passer TypeScript en mode `strict: true`
-- [ ] Supprimer le champ `quoteGeneratedAt`
 
 ### Phase 2 — Amélioration UX & Technique
 
