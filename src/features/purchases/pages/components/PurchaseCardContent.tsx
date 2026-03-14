@@ -11,7 +11,7 @@ export const PurchaseCardContent: Component<{ purchase: FindAllPurchasesReturn[n
 		</div>
 		<div class="mt-2 flex items-center gap-2">
 			<Show when={purchase.isImported}>
-				<CloudSync class="text-slate-400 dark:text-white/30" />
+				<CloudSync size={16} class="text-slate-400 dark:text-white/30" />
 			</Show>
 			<p class="text-slate-500 dark:text-white/50 text-xs truncate">{purchase.description ?? "Achat"}</p>
 		</div>
