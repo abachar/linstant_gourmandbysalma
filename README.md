@@ -120,5 +120,4 @@ Accès protégé par mot de passe unique. La session est stockée dans un cookie
 
 ### Phase 3 — Avancé
 
-- [ ] Tests unitaires et d'intégration (Vitest) + ajout au CI
 - [ ] Rate limiting sur le login (protection brute-force)

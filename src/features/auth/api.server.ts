@@ -1,10 +1,10 @@
 import { scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 import { getCookie, setCookie } from "@tanstack/solid-start/server";
+import { createSessionToken, importSessionKey, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session";
 
 const scryptAsync = promisify(scrypt);
 const COOKIE_NAME = "auth_session";
-const MAX_AGE_SECONDS = 7 * 24 * 60 * 60; // 7 days
 
 let _sessionKey: CryptoKey | null = null;
 async function getSessionKey() {
@@ -12,11 +12,7 @@ async function getSessionKey() {
 
 	const secret = process.env.SESSION_SECRET_HEX;
 	if (!secret) throw new Error("SESSION_SECRET_HEX is not set");
-	const encodedSecret = new TextEncoder().encode(secret);
-	_sessionKey = await crypto.subtle.importKey("raw", encodedSecret, { name: "HMAC", hash: "SHA-256" }, false, [
-		"sign",
-		"verify",
-	]);
+	_sessionKey = await importSessionKey(secret);
 	return _sessionKey;
 }
 
@@ -46,13 +42,6 @@ async function verifyPassword(password: string) {
 	return timingSafeEqual(derivedKey, storedKey);
 }
 
-async function createSessionToken() {
-	const encoded = Buffer.from(Date.now().toString()).toString("base64");
-	const key = await getSessionKey();
-	const sig = Buffer.from(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(encoded))).toString("hex");
-	return `${encoded}.${sig}`;
-}
-
 export async function login(email: string, password: string) {
 	if (!verifyEmail(email)) {
 		throw new Error("Email ou mot de passe incorrect.");
@@ -63,43 +52,22 @@ export async function login(email: string, password: string) {
 		throw new Error("Email ou mot de passe incorrect.");
 	}
 
-	const token = await createSessionToken();
+	const key = await getSessionKey();
+	const token = await createSessionToken(key);
 	setCookie(COOKIE_NAME, token, {
 		httpOnly: true,
 		sameSite: "lax",
 		path: "/",
-		maxAge: MAX_AGE_SECONDS,
+		maxAge: SESSION_MAX_AGE_SECONDS,
 		secure: process.env.NODE_ENV === "production",
 	});
-}
-
-async function verifySessionToken(token: string | undefined) {
-	if (!token) return false;
-
-	const parts = token.split(".");
-	if (parts.length !== 2) return false;
-
-	const [encoded, sig] = parts;
-	const key = await getSessionKey();
-	const sigBuffer = Buffer.from(sig, "hex");
-	const dataBuffer = new TextEncoder().encode(encoded);
-	const isValid = await crypto.subtle.verify("HMAC", key, sigBuffer, dataBuffer);
-	if (!isValid) return false;
-
-	const decodedPayload = Buffer.from(encoded, "base64").toString("utf-8");
-	const timestamp = parseInt(decodedPayload, 10);
-	if (Number.isNaN(timestamp)) return false;
-
-	const ageMs = Date.now() - timestamp;
-	if (ageMs > MAX_AGE_SECONDS * 1000) return false;
-	if (ageMs < 0) return false;
-	return true;
 }
 
 export async function getSession() {
 	try {
 		const token = getCookie(COOKIE_NAME);
-		return { authenticated: await verifySessionToken(token) };
+		const key = await getSessionKey();
+		return { authenticated: await verifySessionToken(token, key) };
 	} catch (e) {
 		console.error(e);
 		return { authenticated: false };
