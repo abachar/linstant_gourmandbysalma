@@ -84,6 +84,10 @@ export async function createPurchase(data: { date: string; amount: string; descr
 }
 
 export async function updatePurchase(data: { id: string; date: string; amount: string; description?: string }) {
+	const [purchase] = await db.select().from(purchases).where(eq(purchases.id, data.id)).limit(1);
+	if (purchase?.importRef !== null && purchase?.importRef !== undefined) {
+		throw new Error("Les achats importés ne peuvent pas être modifiés.");
+	}
 	await db
 		.update(purchases)
 		.set({
@@ -95,5 +99,9 @@ export async function updatePurchase(data: { id: string; date: string; amount: s
 }
 
 export async function deletePurchaseById(id: string) {
+	const [purchase] = await db.select().from(purchases).where(eq(purchases.id, id)).limit(1);
+	if (purchase?.importRef !== null && purchase?.importRef !== undefined) {
+		throw new Error("Les achats importés ne peuvent pas être supprimés.");
+	}
 	await db.delete(purchases).where(eq(purchases.id, id));
 }

@@ -6,6 +6,8 @@ type CardRowProps<T> = {
 	onCardClick?: (row: T) => void;
 	onEditClick?: (row: T) => void;
 	onDeleteClick?: (row: T) => void;
+	canEdit?: (row: T) => boolean;
+	canDelete?: (row: T) => boolean;
 	children: (row: T) => JSXElement;
 };
 
@@ -16,20 +18,20 @@ export const CardRow = <T,>(props: CardRowProps<T>) => (
 		</button>
 
 		<div class="flex border-t border-slate-100 dark:border-white/5">
-			{props.onEditClick && (
+			{props.onEditClick && (!props.canEdit || props.canEdit(props.row)) && (
 				<button
 					type="button"
-					onClick={() => props.onEditClick(props.row)}
+					onClick={() => props.onEditClick?.(props.row)}
 					class="flex-1 h-10 flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-50 dark:hover:bg-white/5 transition-colors"
 				>
 					<Pencil size={18} />
 					Modifier
 				</button>
 			)}
-			{props.onDeleteClick && (
+			{props.onDeleteClick && (!props.canDelete || props.canDelete(props.row)) && (
 				<button
 					type="button"
-					onClick={() => props.onDeleteClick(props.row)}
+					onClick={() => props.onDeleteClick?.(props.row)}
 					class="flex-1 border-l border-slate-100 dark:border-white/5 h-10 flex items-center justify-center gap-2 text-primary text-sm font-medium hover:bg-primary/5 transition-colors"
 				>
 					<Trash2 size={18} />

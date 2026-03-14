@@ -35,7 +35,13 @@ export const PurchaseListPage: Component<FindAllPurchasesReturn> = (props) => {
 					actionLabel="Créer un achat"
 				/>
 			) : (
-				<CardList rows={props.purchases} onEditClick={onEditClick} onDeleteClick={onDeleteClick}>
+				<CardList
+				rows={props.purchases}
+				onEditClick={onEditClick}
+				onDeleteClick={onDeleteClick}
+				canEdit={(p) => !p.isImported}
+				canDelete={(p) => !p.isImported}
+			>
 					{(purchase) => <PurchaseCardContent purchase={purchase} />}
 				</CardList>
 			)}

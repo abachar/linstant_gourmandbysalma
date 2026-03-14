@@ -6,6 +6,8 @@ type CardListProps<T> = {
 	onCardClick?: (row: T) => void;
 	onEditClick?: (row: T) => void;
 	onDeleteClick?: (row: T) => void;
+	canEdit?: (row: T) => boolean;
+	canDelete?: (row: T) => boolean;
 	children: (row: T) => JSXElement;
 };
 
