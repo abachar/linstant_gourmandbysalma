@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/solid-start";
+import { createServerFn } from "@tanstack/react-start";
 import { isValid, parse } from "date-fns";
 import { findDaySales, getDashboard } from "./api.server";
 

@@ -1,18 +1,18 @@
-import { useMutation } from "@common/hooks";
 import { importPurchasesFromCsvFn } from "@features/purchases";
-import { LoaderCircle, Upload } from "lucide-solid";
-import type { Component } from "solid-js";
+import { useMutation } from "@tanstack/react-query";
+import { LoaderCircle, Upload } from "lucide-react";
+import { useRef } from "react";
 
-export const HeaderUploadButton: Component = () => {
-	let fileInputRef!: HTMLInputElement;
-	const { mutate: importPurchasesFromCsv, isLoading } = useMutation({
-		fn: importPurchasesFromCsvFn,
+export const HeaderUploadButton = () => {
+	const fileInputRef = useRef<HTMLInputElement>(null);
+	const { mutateAsync: importPurchasesFromCsv, isPending } = useMutation({
+		mutationFn: importPurchasesFromCsvFn,
 	});
 
-	async function handleFileChange(e: Event) {
-		const file = (e.currentTarget as HTMLInputElement).files?.[0];
+	async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const file = e.currentTarget.files?.[0];
 		if (!file) return;
-		fileInputRef.value = "";
+		if (fileInputRef.current) fileInputRef.current.value = "";
 
 		await importPurchasesFromCsv({ data: { content: await file.text() } });
 	}
@@ -21,12 +21,12 @@ export const HeaderUploadButton: Component = () => {
 		<div>
 			<button
 				type="button"
-				onClick={() => fileInputRef.click()}
-				class="flex items-center justify-center size-10 text-slate-600 dark:text-white"
+				onClick={() => fileInputRef.current?.click()}
+				className="flex items-center justify-center size-10 text-slate-600 dark:text-white"
 			>
-				{isLoading() ? <LoaderCircle class="animate-spin opacity-50" /> : <Upload />}
+				{isPending ? <LoaderCircle className="animate-spin opacity-50" /> : <Upload />}
 			</button>
-			<input ref={fileInputRef} type="file" accept=".csv" class="hidden" onChange={handleFileChange} />
+			<input ref={fileInputRef} type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
 		</div>
 	);
 };

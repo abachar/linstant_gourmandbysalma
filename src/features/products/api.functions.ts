@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/solid-start";
+import { createServerFn } from "@tanstack/react-start";
 import { createProduct, deleteProductById, findAllProducts, findProductById, updateProduct } from "./api.server";
 
 export const findAllProductsFn = createServerFn({ method: "GET" }).handler(findAllProducts);

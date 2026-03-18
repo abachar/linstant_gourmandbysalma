@@ -1,12 +1,10 @@
-import type { LinkProps } from "@tanstack/solid-router";
-import { Link } from "@tanstack/solid-router";
-import { Plus } from "lucide-solid";
-import type { Component } from "solid-js";
+import { Link, type LinkProps } from "@tanstack/react-router";
+import { Plus } from "lucide-react";
 
-export const HeaderAddButton: Component<Pick<LinkProps, "to">> = ({ to }) => (
+export const HeaderAddButton = ({ to }: Pick<LinkProps, "to">) => (
 	<Link
 		to={to}
-		class="flex items-center justify-center rounded-full size-10 bg-primary text-white shadow-lg shadow-primary/20"
+		className="flex items-center justify-center rounded-full size-10 bg-primary text-white shadow-lg shadow-primary/20"
 	>
 		<Plus />
 	</Link>

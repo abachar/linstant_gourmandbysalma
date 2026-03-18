@@ -1,21 +1,21 @@
 import { PageLayout } from "@components/layouts";
-import { useNavigate } from "@tanstack/solid-router";
-import { type Component, createSignal } from "solid-js";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import type { FindProductByIdReturn } from "../api.functions";
 import { updateProductFn } from "../api.functions";
 
-export const ProductEditPage: Component<{ product: FindProductByIdReturn }> = ({ product }) => {
+export const ProductEditPage = ({ product }: { product: FindProductByIdReturn }) => {
 	const navigate = useNavigate();
-	const [productName, setProductName] = createSignal(product.productName);
-	const [quantity, setQuantity] = createSignal(String(product.quantity));
-	const [isPending, setIsPending] = createSignal(false);
+	const [productName, setProductName] = useState(product.productName);
+	const [quantity, setQuantity] = useState(String(product.quantity));
+	const [isPending, setIsPending] = useState(false);
 
-	async function handleSubmit(e: Event) {
+	async function handleSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setIsPending(true);
 		try {
 			await updateProductFn({
-				data: { id: product.id, productName: productName(), quantity: parseInt(quantity(), 10) },
+				data: { id: product.id, productName, quantity: parseInt(quantity, 10) },
 			});
 			navigate({ to: "/products/" });
 		} finally {
@@ -25,46 +25,46 @@ export const ProductEditPage: Component<{ product: FindProductByIdReturn }> = ({
 
 	return (
 		<PageLayout title="Modifier produit" withCancel={true}>
-			<form onSubmit={handleSubmit} class="space-y-6">
-				<div class="space-y-4">
-					<label class="flex flex-col">
-						<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
-							Nom du produit <span class="text-primary">*</span>
+			<form onSubmit={handleSubmit} className="space-y-6">
+				<div className="space-y-4">
+					<label className="flex flex-col">
+						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
+							Nom du produit <span className="text-primary">*</span>
 						</p>
 						<input
 							type="text"
 							required
-							value={productName()}
-							onInput={(e) => setProductName(e.currentTarget.value)}
-							class="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+							value={productName}
+							onChange={(e) => setProductName(e.currentTarget.value)}
+							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
 						/>
 					</label>
 
-					<label class="flex flex-col">
-						<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
-							Quantité <span class="text-primary">*</span>
+					<label className="flex flex-col">
+						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
+							Quantité <span className="text-primary">*</span>
 						</p>
 						<input
 							type="number"
 							required
-							value={quantity()}
-							onInput={(e) => setQuantity(e.currentTarget.value)}
-							class="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+							value={quantity}
+							onChange={(e) => setQuantity(e.currentTarget.value)}
+							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
 						/>
 					</label>
 				</div>
 
-				<div class="flex gap-3 pt-4">
+				<div className="flex gap-3 pt-4">
 					<a
 						href="/products/"
-						class="flex-1 h-14 rounded-xl border border-slate-300 dark:border-[#67323b] text-slate-700 dark:text-white font-bold text-base flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+						className="flex-1 h-14 rounded-xl border border-slate-300 dark:border-[#67323b] text-slate-700 dark:text-white font-bold text-base flex items-center justify-center hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
 					>
 						Annuler
 					</a>
 					<button
 						type="submit"
-						disabled={isPending()}
-						class="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
+						disabled={isPending}
+						className="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
 					>
 						Enregistrer
 					</button>

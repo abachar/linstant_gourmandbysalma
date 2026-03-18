@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/solid-start";
+import { createServerFn } from "@tanstack/react-start";
 import { getSession, login } from "./api.server";
 
 export const loginFn = createServerFn({ method: "POST" })

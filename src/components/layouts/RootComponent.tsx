@@ -1,14 +1,15 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
-import { Outlet } from "@tanstack/solid-router";
-import type { Component } from "solid-js";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Outlet } from "@tanstack/react-router";
+import { Toaster } from "sonner";
 import { RootDocument } from "./RootDocument";
 
 const queryClient = new QueryClient();
 
-export const RootComponent: Component = () => (
+export const RootComponent = () => (
 	<QueryClientProvider client={queryClient}>
 		<RootDocument>
 			<Outlet />
+			<Toaster />
 		</RootDocument>
 	</QueryClientProvider>
 );

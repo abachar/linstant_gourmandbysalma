@@ -1,22 +1,22 @@
-import { useMutation } from "@common/hooks";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
-import { useNavigate } from "@tanstack/solid-router";
-import { ShoppingBasket } from "lucide-solid";
-import type { Component } from "solid-js";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate, useRouter } from "@tanstack/react-router";
+import { ShoppingBasket } from "lucide-react";
 import type { FindAllPurchasesReturn } from "../api.functions";
 import { deletePurchaseByIdFn } from "../api.functions";
 import { HeaderUploadButton, PurchaseCardContent, PurchaseListFilter } from "./components";
 
-export const PurchaseListPage: Component<FindAllPurchasesReturn> = (props) => {
+export const PurchaseListPage = (props: FindAllPurchasesReturn) => {
 	const navigate = useNavigate();
+	const router = useRouter();
 	const { mutate: deletePurchase } = useMutation({
-		fn: deletePurchaseByIdFn,
-		onSuccess: () => window.location.reload(),
+		mutationFn: deletePurchaseByIdFn,
+		onSuccess: () => router.invalidate(),
 	});
 
 	const onEditClick = (purchase: FindAllPurchasesReturn["purchases"][number]) =>
-		navigate({ to: `/purchases/$id/edit`, params: { id: purchase.id } });
+		navigate({ to: "/purchases/$id/edit", params: { id: purchase.id } });
 
 	const onDeleteClick = (purchase: FindAllPurchasesReturn["purchases"][number]) => {
 		if (!confirm("Supprimer cet achat ?")) return;
@@ -36,12 +36,12 @@ export const PurchaseListPage: Component<FindAllPurchasesReturn> = (props) => {
 				/>
 			) : (
 				<CardList
-				rows={props.purchases}
-				onEditClick={onEditClick}
-				onDeleteClick={onDeleteClick}
-				canEdit={(p) => !p.isImported}
-				canDelete={(p) => !p.isImported}
-			>
+					rows={props.purchases}
+					onEditClick={onEditClick}
+					onDeleteClick={onDeleteClick}
+					canEdit={(p) => !p.isImported}
+					canDelete={(p) => !p.isImported}
+				>
 					{(purchase) => <PurchaseCardContent purchase={purchase} />}
 				</CardList>
 			)}

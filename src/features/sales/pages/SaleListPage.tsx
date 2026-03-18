@@ -1,17 +1,16 @@
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
-import { useNavigate } from "@tanstack/solid-router";
-import { ShoppingBag } from "lucide-solid";
-import type { Component } from "solid-js";
+import { useNavigate } from "@tanstack/react-router";
+import { ShoppingBag } from "lucide-react";
 import type { FindSalesByRangeReturn } from "../api.functions";
 import { SaleCardContent, SaleListFilter } from "./components";
 
 type Sale = FindSalesByRangeReturn["sales"][number];
 
-export const SaleListPage: Component<FindSalesByRangeReturn> = ({ sales, selectedFilter }) => {
+export const SaleListPage = ({ sales, selectedFilter }: FindSalesByRangeReturn) => {
 	const navigate = useNavigate();
 
-	const onCardClick = (sale: Sale) => navigate({ to: `/sales/$id`, params: { id: sale.id } });
+	const onCardClick = (sale: Sale) => navigate({ to: "/sales/$id", params: { id: sale.id } });
 
 	return (
 		<PageLayout title="Ventes" addUrl="/sales/new">

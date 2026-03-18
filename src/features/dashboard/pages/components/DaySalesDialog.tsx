@@ -1,55 +1,56 @@
 import { amount, datetimeLong } from "@common/format";
-import { Link } from "@tanstack/solid-router";
-import { X } from "lucide-solid";
-import { type Component, createResource, For, Show } from "solid-js";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import { X } from "lucide-react";
 import { findDaySalesFn } from "../../api.functions";
 
-export const DaySalesDialog: Component<{ date: string; onClose: () => void }> = ({ date, onClose }) => {
-	const [sales] = createResource(
-		() => date,
-		(date) => findDaySalesFn({ data: { date } }),
-	);
+export const DaySalesDialog = ({ date, onClose }: { date: string; onClose: () => void }) => {
+	const { data: sales, isLoading } = useQuery({
+		queryKey: ["day-sales", date],
+		queryFn: () => findDaySalesFn({ data: { date } }),
+	});
 
 	return (
-		<div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+		<div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
 			<dialog
 				open
-				class="m-auto bg-white dark:bg-surface-dark rounded-xl p-0 max-w-[90vw] w-100 border border-slate-200 dark:border-white/10 shadow-2xl"
+				className="m-auto bg-white dark:bg-surface-dark rounded-xl p-0 max-w-[90vw] w-100 border border-slate-200 dark:border-white/10 shadow-2xl"
 			>
-				<div class="flex justify-between items-center p-4 border-b border-slate-200 dark:border-white/10">
-					<h3 class="text-slate-900 dark:text-white font-bold text-lg">Commandes du 12 Janvier 2025</h3>
+				<div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-white/10">
+					<h3 className="text-slate-900 dark:text-white font-bold text-lg">Commandes du 12 Janvier 2025</h3>
 					<button
 						type="button"
 						onClick={onClose}
-						class="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-white/60"
+						className="size-8 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-white/10 text-slate-500 dark:text-white/60"
 					>
 						<X />
 					</button>
 				</div>
-				<div class="p-4 max-h-[60vh] overflow-y-auto">
-					<Show when={!sales.loading} fallback={<p class="text-slate-400 text-sm text-center py-4">Chargement...</p>}>
-						<div class="space-y-3">
-							<For each={sales()}>
-								{(sale) => (
-									<Link
-										to="/sales/$id"
-										params={{ id: sale.id }}
-										class="block p-3 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-									>
-										<div class="flex justify-between items-start">
-											<div>
-												<p class="font-bold text-slate-900 dark:text-white text-sm">{sale.clientName}</p>
-												<p class="text-xs text-slate-500 dark:text-[#c9929b] mt-0.5">
-													{datetimeLong(sale.deliveryDatetime)}
-												</p>
-											</div>
-											<p class="font-bold text-slate-900 dark:text-white text-sm">{amount(sale.amount)}</p>
+				<div className="p-4 max-h-[60vh] overflow-y-auto">
+					{isLoading ? (
+						<p className="text-slate-400 text-sm text-center py-4">Chargement...</p>
+					) : (
+						<div className="space-y-3">
+							{sales?.map((sale) => (
+								<Link
+									key={sale.id}
+									to="/sales/$id"
+									params={{ id: sale.id }}
+									className="block p-3 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+								>
+									<div className="flex justify-between items-start">
+										<div>
+											<p className="font-bold text-slate-900 dark:text-white text-sm">{sale.clientName}</p>
+											<p className="text-xs text-slate-500 dark:text-[#c9929b] mt-0.5">
+												{datetimeLong(sale.deliveryDatetime)}
+											</p>
 										</div>
-									</Link>
-								)}
-							</For>
+										<p className="font-bold text-slate-900 dark:text-white text-sm">{amount(sale.amount)}</p>
+									</div>
+								</Link>
+							))}
 						</div>
-					</Show>
+					)}
 				</div>
 			</dialog>
 		</div>

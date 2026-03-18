@@ -1,24 +1,24 @@
-import { Link } from "@tanstack/solid-router";
-import type { Component, JSXElement } from "solid-js";
+import { Link } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
 type EmptyStateProps = {
-	emptyIcon: JSXElement;
+	emptyIcon: ReactNode;
 	emptyLabel: string;
 	actionUrl?: string;
 	actionLabel?: string;
 };
 
-export const EmptyState: Component<EmptyStateProps> = ({ emptyIcon, emptyLabel, actionUrl, actionLabel }) => {
+export const EmptyState = ({ emptyIcon, emptyLabel, actionUrl, actionLabel }: EmptyStateProps) => {
 	return (
-		<div class="flex flex-col items-center justify-center py-16 text-center">
-			<div class="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+		<div className="flex flex-col items-center justify-center py-16 text-center">
+			<div className="size-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
 				{emptyIcon}
 			</div>
-			<p class="text-slate-500 dark:text-[#c9929b] text-sm mb-4">{emptyLabel}</p>
+			<p className="text-slate-500 dark:text-[#c9929b] text-sm mb-4">{emptyLabel}</p>
 			{actionUrl && (
 				<Link
 					to={actionUrl}
-					class="h-12 px-6 rounded-xl bg-primary text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-primary/20"
+					className="h-12 px-6 rounded-xl bg-primary text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-primary/20"
 				>
 					{actionLabel}
 				</Link>

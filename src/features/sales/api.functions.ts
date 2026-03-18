@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/solid-start";
+import { createServerFn } from "@tanstack/react-start";
 import { addDays, addYears, endOfDay, endOfMonth, startOfDay, startOfMonth, subDays } from "date-fns";
 import { createSale, deleteSaleById, findSaleById, findSalesByRange, updateSale } from "./api.server";
 

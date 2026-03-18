@@ -1,6 +1,6 @@
 import { scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
-import { getCookie, getRequestIP, setCookie } from "@tanstack/solid-start/server";
+import { getCookie, getRequestIP, setCookie } from "@tanstack/react-start/server";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import { createSessionToken, SESSION_MAX_AGE_SECONDS, verifySessionToken } from "./session";
 

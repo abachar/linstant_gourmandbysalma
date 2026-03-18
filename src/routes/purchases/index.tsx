@@ -1,5 +1,5 @@
 import { findAllPurchasesFn, PurchaseListPage } from "@features/purchases";
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
 import z from "zod";
 
@@ -12,5 +12,5 @@ export const Route = createFileRoute("/purchases/")({
 
 function RouteComponent() {
 	const data = Route.useLoaderData();
-	return <PurchaseListPage {...data()} />;
+	return <PurchaseListPage {...data} />;
 }

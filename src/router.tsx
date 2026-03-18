@@ -1,5 +1,5 @@
 import { DefaultErrorComponent, DefaultNotFoundComponent } from "@components/defaults";
-import { createRouter } from "@tanstack/solid-router";
+import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {

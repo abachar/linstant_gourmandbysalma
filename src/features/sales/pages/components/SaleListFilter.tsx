@@ -1,27 +1,20 @@
-import { Link } from "@tanstack/solid-router";
-import type { Component } from "solid-js";
+import { Link } from "@tanstack/react-router";
 
-export const FilterLink: Component<{ label: string; value: string; active: boolean }> = ({ label, value, active }) => (
+const FilterLink = ({ label, value, active }: { label: string; value: string; active: boolean }) => (
 	<Link
 		to="/sales"
 		search={{ filter: value }}
-		class={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl px-4 ${active ? "bg-primary shadow-l shadow-primary/20" : "bg-slate-200 dark:bg-surface-dark"}`}
+		className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl px-4 ${active ? "bg-primary shadow-l shadow-primary/20" : "bg-slate-200 dark:bg-surface-dark"}`}
 	>
-		<p
-			class="text-sm font-medium whitespace-nowrap"
-			classList={{
-				"text-white": active,
-				"text-slate-700 dark:text-white": !active,
-			}}
-		>
+		<p className={`text-sm font-medium whitespace-nowrap ${active ? "text-white" : "text-slate-700 dark:text-white"}`}>
 			{label}
 		</p>
 	</Link>
 );
 
-export const SaleListFilter: Component<{ selectedFilter: string | undefined }> = ({ selectedFilter }) => {
+export const SaleListFilter = ({ selectedFilter }: { selectedFilter: string | undefined }) => {
 	return (
-		<div class="flex gap-2 py-3 overflow-x-auto hide-scrollbar">
+		<div className="flex gap-2 py-3 overflow-x-auto hide-scrollbar">
 			<FilterLink label="À venir" value="upcoming" active={selectedFilter === "upcoming"} />
 			<FilterLink label="Ce mois" value="month" active={selectedFilter === "month"} />
 			<FilterLink label="Passées" value="past" active={selectedFilter === "past"} />

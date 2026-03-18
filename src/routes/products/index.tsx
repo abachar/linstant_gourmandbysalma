@@ -1,5 +1,5 @@
 import { findAllProductsFn, ProductListPage } from "@features/products";
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/")({
 	loader: () => findAllProductsFn(),
@@ -8,5 +8,5 @@ export const Route = createFileRoute("/products/")({
 
 function RouteComponent() {
 	const data = Route.useLoaderData();
-	return <ProductListPage products={data()} />;
+	return <ProductListPage products={data} />;
 }

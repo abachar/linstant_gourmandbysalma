@@ -1,14 +1,13 @@
-import { HeadContent, Scripts } from "@tanstack/solid-router";
-import { type ParentComponent, Suspense } from "solid-js";
-import { HydrationScript } from "solid-js/web";
+import { HeadContent, Scripts } from "@tanstack/react-router";
+import type { PropsWithChildren } from "react";
+import { Suspense } from "react";
 
-export const RootDocument: ParentComponent = ({ children }) => (
+export const RootDocument = ({ children }: PropsWithChildren) => (
 	<html lang="fr">
 		<head>
-			<HydrationScript />
-		</head>
-		<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
 			<HeadContent />
+		</head>
+		<body className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
 			<Suspense>{children}</Suspense>
 			<Scripts />
 		</body>

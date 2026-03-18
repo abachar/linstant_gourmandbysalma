@@ -1,5 +1,5 @@
 import { findSaleByIdFn, SaleEditPage } from "@features/sales";
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/sales/$id/edit")({
 	loader: ({ params }) => findSaleByIdFn({ data: { id: params.id } }),
@@ -8,5 +8,5 @@ export const Route = createFileRoute("/sales/$id/edit")({
 
 function RouteComponent() {
 	const data = Route.useLoaderData();
-	return <SaleEditPage sale={data()} />;
+	return <SaleEditPage sale={data} />;
 }

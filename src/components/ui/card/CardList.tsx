@@ -1,4 +1,4 @@
-import type { JSXElement } from "solid-js";
+import type { ReactNode } from "react";
 import { CardRow } from "./CardRow";
 
 type CardListProps<T> = {
@@ -8,13 +8,14 @@ type CardListProps<T> = {
 	onDeleteClick?: (row: T) => void;
 	canEdit?: (row: T) => boolean;
 	canDelete?: (row: T) => boolean;
-	children: (row: T) => JSXElement;
+	children: (row: T) => ReactNode;
 };
 
 export const CardList = <T,>({ rows, ...props }: CardListProps<T>) => (
-	<div class="space-y-5">
-		{rows.map((row) => (
-			<CardRow row={row} {...props} />
+	<div className="space-y-5">
+		{rows.map((row, i) => (
+			// biome-ignore lint/suspicious/noArrayIndexKey: pas d'id générique disponible
+			<CardRow key={i} row={row} {...props} />
 		))}
 	</div>
 );

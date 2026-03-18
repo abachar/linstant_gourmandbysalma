@@ -1,5 +1,5 @@
 import { findProductByIdFn, ProductEditPage } from "@features/products";
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/$id/edit")({
 	loader: ({ params }) => findProductByIdFn({ data: { id: params.id } }),
@@ -8,5 +8,5 @@ export const Route = createFileRoute("/products/$id/edit")({
 
 function RouteComponent() {
 	const data = Route.useLoaderData();
-	return <ProductEditPage product={data()} />;
+	return <ProductEditPage product={data} />;
 }

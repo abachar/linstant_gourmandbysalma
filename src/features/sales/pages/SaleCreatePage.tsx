@@ -1,12 +1,12 @@
 import { PageLayout } from "@components/layouts";
-import { useNavigate } from "@tanstack/solid-router";
-import { type Component, createSignal } from "solid-js";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { createSaleFn } from "../api.functions";
 import { SaleForm, type SaleFormValues } from "./components/SaleForm";
 
-export const SaleCreatePage: Component = () => {
+export const SaleCreatePage = () => {
 	const navigate = useNavigate();
-	const [isPending, setIsPending] = createSignal(false);
+	const [isPending, setIsPending] = useState(false);
 
 	const initialValues: SaleFormValues = {
 		clientName: "",
@@ -43,7 +43,7 @@ export const SaleCreatePage: Component = () => {
 				onSubmit={handleSubmit}
 				submitLabel="Enregistrer la vente"
 				cancelHref="/sales/"
-				isPending={isPending()}
+				isPending={isPending}
 			/>
 		</PageLayout>
 	);

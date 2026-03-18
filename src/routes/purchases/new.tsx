@@ -1,5 +1,5 @@
 import { PurchaseCreatePage } from "@features/purchases";
-import { createFileRoute } from "@tanstack/solid-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/purchases/new")({
 	component: RouteComponent,

@@ -16,12 +16,12 @@ pnpm lint         # Lint with Biome
 
 ## Stack
 
-- **Framework**: TanStack Start (Bun) — full-stack **Solid.js** SSR (NOT React)
-- **Routing**: TanStack Solid Router (file-based, `routeTree.gen.ts` auto-generated — do NOT edit)
+- **Framework**: TanStack Start — full-stack **React** SSR
+- **Routing**: TanStack React Router (file-based, `routeTree.gen.ts` auto-generated — do NOT edit)
 - **ORM**: Drizzle ORM (PostgreSQL)
 - **CSS**: Tailwind CSS v4 — `@theme` is valid syntax (ignore IDE linting warnings)
 - **Linter**: Biome (tabs, 120-char lines, double quotes)
-- **Icons**: lucide-solid
+- **Icons**: lucide-react
 
 ## Architecture
 
@@ -38,8 +38,8 @@ Each feature in `src/features/` follows this pattern:
 
 ### Server functions
 
-- Import `createServerFn` from `@tanstack/solid-start` (NOT `/server` subpath)
-- Cookies: `getCookie`/`setCookie` from `@tanstack/solid-start/server`
+- Import `createServerFn` from `@tanstack/react-start` (NOT `/server` subpath)
+- Cookies: `getCookie`/`setCookie` from `@tanstack/react-start/server`
 - Export return types as: `type MyType = Awaited<ReturnType<typeof myServerFn>>`
 - Only `createServerFn()` exports from `.server.ts` files are accessible on the client
 
@@ -47,8 +47,8 @@ Each feature in `src/features/` follows this pattern:
 
 - Route loaders call server functions directly (no TanStack Query cache currently)
 - Components access data via `Route.useLoaderData()`
-- Mutations use `useMutation` from `@common/hooks` (not `createMutation`)
-- After mutations: `window.location.reload()` (query invalidation planned for backlog)
+- Mutations use `useMutation` from `@tanstack/react-query`
+- After mutations: `window.location.reload()` or `router.invalidate()` (query invalidation planned for backlog)
 
 ### Routing
 
@@ -81,6 +81,5 @@ Each feature in `src/features/` follows this pattern:
 ## Key conventions
 
 - UI is entirely in **French**
-- Conditional rendering with typed data: `<Show when={query.data}>{(data) => ...}</Show>`
 - Date/amount formatting: use helpers from `@common/format`
 - Database schema: `src/common/db/schema.ts` (sales, purchases, products tables)

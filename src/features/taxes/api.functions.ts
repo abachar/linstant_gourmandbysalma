@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/solid-start";
+import { createServerFn } from "@tanstack/react-start";
 import { getTaxReporting } from "./api.server";
 
 export const findTaxReportingFn = createServerFn({ method: "GET" })

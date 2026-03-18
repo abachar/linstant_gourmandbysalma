@@ -15,8 +15,8 @@ Site d'administration des commandes / achats pour traiteur spécialisé en petit
 | Couche | Technologie |
 |---|---|
 | Runtime | Node.js + [pnpm](https://pnpm.io) |
-| Framework | [TanStack Start](https://tanstack.com/start) + [Solid.js](https://www.solidjs.com) (SSR) |
-| Routing | TanStack Solid Router (file-based) |
+| Framework | [TanStack Start](https://tanstack.com/start) + [React](https://react.dev) (SSR) |
+| Routing | TanStack React Router (file-based) |
 | ORM | Drizzle ORM |
 | Base de données | PostgreSQL |
 | CSS | Tailwind CSS v4 |
@@ -80,8 +80,7 @@ src/
 │   ├── db/
 │   │   ├── schema.ts        # Schéma Drizzle (sales, purchases, products)
 │   │   └── index.ts
-│   ├── format/              # Formateurs de dates et montants (français)
-│   └── hooks/               # Hooks partagés (useMutation, etc.)
+│   └── format/              # Formateurs de dates et montants (français)
 ├── features/
 │   ├── auth/                # Authentification (session cookie HMAC)
 │   ├── dashboard/           # Tableau de bord
@@ -115,5 +114,4 @@ Accès protégé par mot de passe unique. La session est stockée dans un cookie
 
 ### Phase 2 — Amélioration UX & Technique
 
-- [ ] Remplacer `window.location.reload()` par des invalidations de cache (TanStack Query)
 - [ ] Gestion d'erreurs structurée : `ErrorBoundary`, messages utilisateur (toasts)

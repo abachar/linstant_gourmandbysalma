@@ -1,22 +1,22 @@
-import { useMutation } from "@common/hooks";
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
-import { useNavigate } from "@tanstack/solid-router";
-import { Refrigerator } from "lucide-solid";
-import type { Component } from "solid-js";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate, useRouter } from "@tanstack/react-router";
+import { Refrigerator } from "lucide-react";
 import { deleteProductByIdFn, type FindAllProductsReturn } from "../api.functions";
 import { ProductCardContent } from "./components";
 
 type Product = FindAllProductsReturn[number];
 
-export const ProductListPage: Component<{ products: FindAllProductsReturn }> = ({ products }) => {
+export const ProductListPage = ({ products }: { products: FindAllProductsReturn }) => {
 	const navigate = useNavigate();
+	const router = useRouter();
 	const { mutate: deleteProduct } = useMutation({
-		fn: deleteProductByIdFn,
-		onSuccess: () => window.location.reload(),
+		mutationFn: deleteProductByIdFn,
+		onSuccess: () => router.invalidate(),
 	});
 
-	const onEditClick = (product: Product) => navigate({ to: `/products/$id/edit`, params: { id: product.id } });
+	const onEditClick = (product: Product) => navigate({ to: "/products/$id/edit", params: { id: product.id } });
 
 	const onDeleteClick = (product: Product) => {
 		if (!confirm("Supprimer ce produit ?")) return;
@@ -25,9 +25,9 @@ export const ProductListPage: Component<{ products: FindAllProductsReturn }> = (
 
 	return (
 		<PageLayout title="Stock" addUrl="/products/new">
-			<div class="flex items-center justify-between mb-3 px-1">
-				<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Stock Actuel</h2>
-				<span class="text-xs font-medium text-slate-400">{products.length} Produits</span>
+			<div className="flex items-center justify-between mb-3 px-1">
+				<h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Stock Actuel</h2>
+				<span className="text-xs font-medium text-slate-400">{products.length} Produits</span>
 			</div>
 
 			{products.length === 0 ? (

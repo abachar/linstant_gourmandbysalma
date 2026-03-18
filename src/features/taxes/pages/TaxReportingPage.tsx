@@ -1,11 +1,10 @@
 import { PageLayout } from "@components/layouts";
 import { CardList, EmptyState } from "@components/ui";
-import { ChartPie } from "lucide-solid";
-import type { Component } from "solid-js";
+import { ChartPie } from "lucide-react";
 import type { FindTaxReportingReturn } from "../api.functions";
 import { TaxReportingCardContent, TaxReportingFilter } from "./components";
 
-export const TaxReportingPage: Component<FindTaxReportingReturn> = (props) => (
+export const TaxReportingPage = (props: FindTaxReportingReturn) => (
 	<PageLayout title="Taxes">
 		<TaxReportingFilter {...props} />
 		{props.monthlyItems.length === 0 ? (

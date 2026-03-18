@@ -1,14 +1,14 @@
 import { formatDatetimeLocal } from "@common/format/date";
 import { PageLayout } from "@components/layouts";
-import { useNavigate } from "@tanstack/solid-router";
-import { type Component, createSignal } from "solid-js";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import type { FindSaleByIdReturn } from "../api.functions";
 import { updateSaleFn } from "../api.functions";
 import { SaleForm, type SaleFormValues } from "./components/SaleForm";
 
-export const SaleEditPage: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) => {
+export const SaleEditPage = ({ sale }: { sale: FindSaleByIdReturn }) => {
 	const navigate = useNavigate();
-	const [isPending, setIsPending] = createSignal(false);
+	const [isPending, setIsPending] = useState(false);
 
 	const initialValues: SaleFormValues = {
 		clientName: sale.clientName,
@@ -46,7 +46,7 @@ export const SaleEditPage: Component<{ sale: FindSaleByIdReturn }> = ({ sale }) 
 				onSubmit={handleSubmit}
 				submitLabel="Enregistrer"
 				cancelHref={`/sales/${sale.id}`}
-				isPending={isPending()}
+				isPending={isPending}
 			/>
 		</PageLayout>
 	);

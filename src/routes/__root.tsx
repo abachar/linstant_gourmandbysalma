@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 import { RootComponent } from "@components/layouts";
 import { getSessionFn } from "@features/auth";
-import { createRootRoute, redirect } from "@tanstack/solid-router";
+import { createRootRoute, redirect } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
