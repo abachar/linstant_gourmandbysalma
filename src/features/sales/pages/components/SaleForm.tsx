@@ -240,7 +240,7 @@ export const SaleForm = (props: SaleFormProps) => {
 				<button
 					type="submit"
 					disabled={props.isPending}
-					className="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
+					className="flex-2 h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
 				>
 					{props.submitLabel}
 				</button>

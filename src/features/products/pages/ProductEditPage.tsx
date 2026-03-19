@@ -1,6 +1,7 @@
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { formatDateInput } from "@common/format";
 import type { FindProductByIdReturn } from "../api.functions";
 import { updateProductFn } from "../api.functions";
 
@@ -8,6 +9,9 @@ export const ProductEditPage = ({ product }: { product: FindProductByIdReturn })
 	const navigate = useNavigate();
 	const [productName, setProductName] = useState(product.productName);
 	const [quantity, setQuantity] = useState(String(product.quantity));
+	const [expirationDate, setExpirationDate] = useState(
+		product.expirationDate ? formatDateInput(product.expirationDate) : "",
+	);
 	const [isPending, setIsPending] = useState(false);
 
 	async function handleSubmit(e: React.FormEvent) {
@@ -15,7 +19,7 @@ export const ProductEditPage = ({ product }: { product: FindProductByIdReturn })
 		setIsPending(true);
 		try {
 			await updateProductFn({
-				data: { id: product.id, productName, quantity: parseInt(quantity, 10) },
+				data: { id: product.id, productName, quantity: parseInt(quantity, 10), expirationDate: expirationDate || null },
 			});
 			navigate({ to: "/products/" });
 		} finally {
@@ -52,6 +56,18 @@ export const ProductEditPage = ({ product }: { product: FindProductByIdReturn })
 							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
 						/>
 					</label>
+
+					<label className="flex flex-col">
+						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
+							Date limite de consommation
+						</p>
+						<input
+							type="date"
+							value={expirationDate}
+							onChange={(e) => setExpirationDate(e.currentTarget.value)}
+							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+						/>
+					</label>
 				</div>
 
 				<div className="flex gap-3 pt-4">
@@ -64,7 +80,7 @@ export const ProductEditPage = ({ product }: { product: FindProductByIdReturn })
 					<button
 						type="submit"
 						disabled={isPending}
-						className="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
+						className="flex-2 h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
 					>
 						Enregistrer
 					</button>

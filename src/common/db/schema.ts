@@ -39,6 +39,7 @@ export const products = pgTable(
 		id: uuid("id").primaryKey().defaultRandom(),
 		productName: text("product_name").notNull(),
 		quantity: integer("quantity").notNull().default(0),
+		expirationDate: timestamp("expiration_date", { withTimezone: true }),
 		updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 	},
 	(t) => [index("idx_products_product_name").on(t.productName)],

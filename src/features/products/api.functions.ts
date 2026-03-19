@@ -12,7 +12,7 @@ export const findProductByIdFn = createServerFn({ method: "GET" })
 export type FindProductByIdReturn = Awaited<ReturnType<typeof findProductByIdFn>>;
 
 export const createProductFn = createServerFn({ method: "POST" })
-	.inputValidator((data: { productName: string; quantity: number }) => data)
+	.inputValidator((data: { productName: string; quantity: number; expirationDate: string | null }) => data)
 	.handler(async ({ data }) => createProduct(data));
 
 export const deleteProductByIdFn = createServerFn({ method: "POST" })
@@ -20,5 +20,5 @@ export const deleteProductByIdFn = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => deleteProductById(data.id));
 
 export const updateProductFn = createServerFn({ method: "POST" })
-	.inputValidator((data: { id: string; productName: string; quantity: number }) => data)
+	.inputValidator((data: { id: string; productName: string; quantity: number; expirationDate: string | null }) => data)
 	.handler(async ({ data }) => updateProduct(data));

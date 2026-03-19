@@ -2,7 +2,7 @@
 .env
 .env.production
 .tanstack/
-.claude/
+.claude/settings.local.json
 _/
 node_modules/
 dist/

@@ -7,6 +7,7 @@ export const ProductCreatePage = () => {
 	const navigate = useNavigate();
 	const [productName, setProductName] = useState("");
 	const [quantity, setQuantity] = useState("0");
+	const [expirationDate, setExpirationDate] = useState("");
 	const [isPending, setIsPending] = useState(false);
 
 	async function handleSubmit(e: React.FormEvent) {
@@ -14,7 +15,7 @@ export const ProductCreatePage = () => {
 		setIsPending(true);
 		try {
 			await createProductFn({
-				data: { productName, quantity: parseInt(quantity, 10) },
+				data: { productName, quantity: parseInt(quantity, 10), expirationDate: expirationDate || null },
 			});
 			navigate({ to: "/products/" });
 		} finally {
@@ -52,6 +53,18 @@ export const ProductCreatePage = () => {
 							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
 						/>
 					</label>
+
+					<label className="flex flex-col">
+						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
+							Date limite de consommation
+						</p>
+						<input
+							type="date"
+							value={expirationDate}
+							onChange={(e) => setExpirationDate(e.currentTarget.value)}
+							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+						/>
+					</label>
 				</div>
 
 				<div className="flex gap-3 pt-4">
@@ -64,7 +77,7 @@ export const ProductCreatePage = () => {
 					<button
 						type="submit"
 						disabled={isPending}
-						className="flex-[2] h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
+						className="flex-2 h-14 rounded-xl bg-primary text-white font-bold text-base shadow-lg shadow-primary/25 active:scale-95 transition-transform disabled:opacity-50"
 					>
 						Ajouter
 					</button>
