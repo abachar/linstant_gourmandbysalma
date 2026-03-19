@@ -1,13 +1,22 @@
 import { Link } from "@tanstack/react-router";
+import clsx from "clsx";
 import type { FindTaxReportingReturn } from "../../api.functions";
 
 export const FilterLink = ({ year, active }: { year: number; active: boolean }) => (
 	<Link
 		to="/taxes"
 		search={{ year: year }}
-		className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl px-4 ${active ? "bg-primary shadow-l shadow-primary/20" : "bg-slate-200 dark:bg-surface-dark"}`}
+		className={clsx("flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl px-4", {
+			"bg-primary shadow-l shadow-primary/20": active,
+			"bg-slate-200 dark:bg-surface-dark": !active,
+		})}
 	>
-		<p className={`text-sm font-medium whitespace-nowrap ${active ? "text-white" : "text-slate-700 dark:text-white"}`}>
+		<p
+			className={clsx("text-sm font-medium whitespace-nowrap", {
+				"text-white": active,
+				"text-slate-700 dark:text-white": !active,
+			})}
+		>
 			{year}
 		</p>
 	</Link>

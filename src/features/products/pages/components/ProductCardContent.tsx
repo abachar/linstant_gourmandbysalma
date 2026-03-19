@@ -1,4 +1,5 @@
 import { dateShort } from "@common/format";
+import clsx from "clsx";
 import { addMonths, isBefore, isPast } from "date-fns";
 import type { FindAllProductsReturn } from "../../api.functions";
 
@@ -25,42 +26,38 @@ export const ProductCardContent = ({ product }: { product: FindAllProductsReturn
 					<span className="text-success font-bold text-sm">{product.quantity} unités</span>
 				)}
 			</div>
-			<div className="mt-2 flex items-center gap-1.5">
-				{product.quantity === 0 ? (
-					<>
-						<div className="size-2 rounded-full bg-primary" />
-						<span className="text-[10px] font-bold uppercase tracking-wide text-primary">Rupture</span>
-					</>
-				) : product.quantity < 10 ? (
-					<>
-						<div className="size-2 rounded-full bg-warning" />
-						<span className="text-[10px] font-bold uppercase tracking-wide text-warning">Stock faible</span>
-					</>
-				) : (
-					<>
-						<div className="size-2 rounded-full bg-success" />
-						<span className="text-[10px] font-bold uppercase tracking-wide text-success">En stock</span>
-					</>
-				)}
-			</div>
-			<div className="mt-1 flex items-center gap-3 text-[11px] text-slate-400 dark:text-slate-500">
-				<span>Modifié le {dateShort(product.updatedAt)}</span>
-				{product.expirationDate && (
-					<>
-						<span>·</span>
-						<span
-							className={
-								expirationStatus === "expired"
-									? "text-primary font-semibold"
-									: expirationStatus === "soon"
-										? "text-warning font-semibold"
-										: ""
-							}
-						>
-							DLC {dateShort(product.expirationDate)}
-						</span>
-					</>
-				)}
+			<div className="mt-1 flex items-center gap-6 text-xs text-slate-400 dark:text-slate-500">
+				<div className="flex flex-col pt-4 items-start">
+					<span className="text-[10px] uppercase">Modifié le</span>
+					<span>{dateShort(product.updatedAt)}</span>
+				</div>
+				<div
+					className={clsx("flex flex-col pt-4 items-start", {
+						"text-primary font-semibold": expirationStatus === "expired",
+						"text-warning font-semibold": expirationStatus === "soon",
+					})}
+				>
+					<span className="text-[10px] uppercase">Date limite</span>
+					{product.expirationDate ? <span>{dateShort(product.expirationDate)}</span> : <span>Aucune</span>}
+				</div>
+				<div className="flex-1 flex justify-end self-start items-center gap-1.5">
+					{product.quantity === 0 ? (
+						<>
+							<div className="size-2 rounded-full bg-primary" />
+							<span className="text-[10px] font-bold uppercase tracking-wide text-primary">Rupture</span>
+						</>
+					) : product.quantity < 10 ? (
+						<>
+							<div className="size-2 rounded-full bg-warning" />
+							<span className="text-[10px] font-bold uppercase tracking-wide text-warning">Stock faible</span>
+						</>
+					) : (
+						<>
+							<div className="size-2 rounded-full bg-success" />
+							<span className="text-[10px] font-bold uppercase tracking-wide text-success">En stock</span>
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);

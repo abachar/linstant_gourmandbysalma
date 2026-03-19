@@ -1,7 +1,7 @@
+import { formatDateInput } from "@common/format";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { formatDateInput } from "@common/format";
 import type { FindProductByIdReturn } from "../api.functions";
 import { updateProductFn } from "../api.functions";
 

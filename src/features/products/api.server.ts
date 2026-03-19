@@ -27,7 +27,12 @@ export async function deleteProductById(id: string) {
 	await db.delete(products).where(eq(products.id, id));
 }
 
-export async function updateProduct(data: { id: string; productName: string; quantity: number; expirationDate: string | null }) {
+export async function updateProduct(data: {
+	id: string;
+	productName: string;
+	quantity: number;
+	expirationDate: string | null;
+}) {
 	await db
 		.update(products)
 		.set({

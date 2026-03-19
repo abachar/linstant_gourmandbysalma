@@ -1,4 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import clsx from "clsx";
 import { ChartPie, LayoutDashboard, Refrigerator, ShoppingBag, ShoppingBasket } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -12,7 +13,10 @@ const NavigationLink = ({ href, label, icon }: { href: string; label: string; ic
 	return (
 		<Link
 			to={href}
-			className={`flex flex-col items-center gap-1 ${isActive ? "text-primary" : "text-slate-400 dark:text-[#c9929b]"}`}
+			className={clsx("flex flex-col items-center gap-1", {
+				"text-primary": isActive,
+				"text-slate-400 dark:text-[#c9929b]": !isActive,
+			})}
 		>
 			{icon}
 			<span className="text-[10px] font-bold">{label}</span>

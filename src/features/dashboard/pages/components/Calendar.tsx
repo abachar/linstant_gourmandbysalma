@@ -1,5 +1,6 @@
 import { DAYS_OF_WEEK } from "@common/format";
 import { Link } from "@tanstack/react-router";
+import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { FindDashboardReturn } from "../../api.functions";
 
@@ -44,13 +45,11 @@ export const Calendar = ({ onSelectDate, ...props }: CalendarProps) => (
 					key={date}
 					type="button"
 					onClick={() => onSelectDate(date)}
-					className={`h-10 w-full text-sm flex flex-col items-center justify-center relative ${
-						!inCurrentMonth
-							? "text-slate-300 dark:text-white/15"
-							: count > 0
-								? "text-slate-900 dark:text-white"
-								: "text-slate-500 dark:text-white/60"
-					}`}
+					className={clsx("h-10 w-full text-sm flex flex-col items-center justify-center relative", {
+						"text-slate-300 dark:text-white/15": !inCurrentMonth,
+						"text-slate-900 dark:text-white": inCurrentMonth && count > 0,
+						"text-slate-500 dark:text-white/60": inCurrentMonth && count === 0,
+					})}
 				>
 					{day}
 					<span className="flex gap-0.5 absolute bottom-1">
