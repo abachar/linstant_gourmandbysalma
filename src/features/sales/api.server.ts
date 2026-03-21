@@ -4,12 +4,12 @@ import { asc, between, desc, eq } from "drizzle-orm";
 
 export async function getDistinctClients() {
 	return await db
-		.selectDistinctOn([sales.clientName], {
+		.selectDistinctOn([sales.clientName, sales.deliveryAddress], {
 			clientName: sales.clientName,
 			deliveryAddress: sales.deliveryAddress,
 		})
 		.from(sales)
-		.orderBy(asc(sales.clientName), desc(sales.createdAt));
+		.orderBy(asc(sales.clientName), asc(sales.deliveryAddress));
 }
 
 export async function findSalesByRange(from: Date, end: Date) {
