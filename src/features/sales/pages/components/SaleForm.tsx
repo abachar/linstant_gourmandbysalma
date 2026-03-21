@@ -1,3 +1,4 @@
+import type { GetDistinctClientsReturn } from "@features/sales/api.functions";
 import { CreditCard, HandCoins } from "lucide-react";
 import { useState } from "react";
 import { PaymentMethodValue } from "./PaymentMethodValue";
@@ -18,6 +19,7 @@ export interface SaleFormValues {
 
 interface SaleFormProps {
 	initialValues: SaleFormValues;
+	knownClients?: GetDistinctClientsReturn;
 	onSubmit: (values: SaleFormValues) => Promise<void>;
 	submitLabel: string;
 	cancelHref: string;
@@ -26,9 +28,24 @@ interface SaleFormProps {
 
 export const SaleForm = (props: SaleFormProps) => {
 	const [values, setValues] = useState<SaleFormValues>(props.initialValues);
+	const [showSuggestions, setShowSuggestions] = useState(false);
+
+	const suggestions =
+		props.knownClients && values.clientName.trim().length > 0
+			? props.knownClients.filter((c) => c.clientName.toLowerCase().includes(values.clientName.toLowerCase()))
+			: [];
 
 	function set(key: keyof SaleFormValues, value: string) {
 		setValues((prev) => ({ ...prev, [key]: value }));
+	}
+
+	function selectClient(client: GetDistinctClientsReturn[number]) {
+		setValues((prev) => ({
+			...prev,
+			clientName: client.clientName,
+			deliveryAddress: client.deliveryAddress ?? prev.deliveryAddress,
+		}));
+		setShowSuggestions(false);
 	}
 
 	function onAmountChange(amountVal: string) {
@@ -62,19 +79,50 @@ export const SaleForm = (props: SaleFormProps) => {
 					Informations Client
 				</h3>
 				<div className="flex flex-col gap-4">
-					<label className="flex flex-col">
+					<div className="flex flex-col">
 						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Nom du client <span className="text-primary">*</span>
 						</p>
-						<input
-							type="text"
-							required
-							value={values.clientName}
-							onChange={(e) => set("clientName", e.currentTarget.value)}
-							placeholder="Ex: Marie Lefebvre"
-							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
-						/>
-					</label>
+						<div className="relative">
+							<input
+								type="text"
+								required
+								value={values.clientName}
+								onChange={(e) => {
+									set("clientName", e.currentTarget.value);
+									setShowSuggestions(true);
+								}}
+								onFocus={() => setShowSuggestions(true)}
+								onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+								placeholder="Ex: Marie Lefebvre"
+								autoComplete="off"
+								className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+							/>
+							{showSuggestions && suggestions.length > 0 && (
+								<ul className="absolute z-10 left-0 right-0 top-full mt-1 bg-white dark:bg-surface-dark border border-slate-200 dark:border-[#67323b] rounded-lg shadow-lg overflow-hidden">
+									{suggestions.map((client) => (
+										<li key={client.clientName}>
+											<button
+												type="button"
+												onMouseDown={(e) => e.preventDefault()}
+												onClick={() => selectClient(client)}
+												className="w-full text-left px-4 py-3 hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
+											>
+												<span className="text-slate-900 dark:text-white font-medium text-sm">
+													{client.clientName}
+												</span>
+												{client.deliveryAddress && (
+													<span className="block text-slate-400 dark:text-slate-500 text-xs truncate mt-0.5">
+														{client.deliveryAddress}
+													</span>
+												)}
+											</button>
+										</li>
+									))}
+								</ul>
+							)}
+						</div>
+					</div>
 					<label className="flex flex-col">
 						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Adresse de livraison

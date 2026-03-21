@@ -1,10 +1,15 @@
 import { PageLayout } from "@components/layouts";
+import type { GetDistinctClientsReturn } from "@features/sales/api.functions";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { createSaleFn } from "../api.functions";
 import { SaleForm, type SaleFormValues } from "./components/SaleForm";
 
-export const SaleCreatePage = () => {
+interface SaleCreatePageProps {
+	knownClients?: GetDistinctClientsReturn;
+}
+
+export const SaleCreatePage = ({ knownClients }: SaleCreatePageProps) => {
 	const navigate = useNavigate();
 	const [isPending, setIsPending] = useState(false);
 
@@ -40,6 +45,7 @@ export const SaleCreatePage = () => {
 		<PageLayout title="Nouvelle vente" withCancel={true}>
 			<SaleForm
 				initialValues={initialValues}
+				knownClients={knownClients}
 				onSubmit={handleSubmit}
 				submitLabel="Enregistrer la vente"
 				cancelHref="/sales/"

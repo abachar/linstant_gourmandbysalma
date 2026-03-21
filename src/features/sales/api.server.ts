@@ -1,6 +1,16 @@
 import { db, sales } from "@common/db";
 import { endOfDay, startOfDay } from "date-fns";
-import { between, desc, eq } from "drizzle-orm";
+import { asc, between, desc, eq } from "drizzle-orm";
+
+export async function getDistinctClients() {
+	return await db
+		.selectDistinctOn([sales.clientName], {
+			clientName: sales.clientName,
+			deliveryAddress: sales.deliveryAddress,
+		})
+		.from(sales)
+		.orderBy(asc(sales.clientName), desc(sales.createdAt));
+}
 
 export async function findSalesByRange(from: Date, end: Date) {
 	return await db
