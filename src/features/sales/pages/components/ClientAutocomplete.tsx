@@ -1,26 +1,28 @@
+import { getDistinctClientsFn } from "@features/sales/api.functions";
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-
-interface ClientEntry {
-	clientName: string;
-	deliveryAddress: string | null;
-}
 
 interface ClientAutocompleteProps {
 	value: string;
 	onChange: (clientName: string, deliveryAddress?: string) => void;
-	knownClients?: ClientEntry[];
 }
 
-export const ClientAutocomplete = ({ value, onChange, knownClients = [] }: ClientAutocompleteProps) => {
+export const ClientAutocomplete = ({ value, onChange }: ClientAutocompleteProps) => {
 	const [query, setQuery] = useState("");
+
+	const { data: knownClients = [] } = useQuery({
+		queryKey: ["clients"],
+		queryFn: () => getDistinctClientsFn(),
+		staleTime: 5 * 60 * 1000,
+	});
 
 	const suggestions =
 		query.trim().length === 0
 			? []
 			: knownClients.filter((c) => c.clientName.toLowerCase().includes(query.toLowerCase()));
 
-	function handleSelect(entry: ClientEntry | null) {
+	function handleSelect(entry: (typeof knownClients)[number] | null) {
 		if (!entry) return;
 		onChange(entry.clientName, entry.deliveryAddress ?? undefined);
 		setQuery("");

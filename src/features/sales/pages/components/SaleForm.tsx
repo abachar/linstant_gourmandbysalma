@@ -1,4 +1,3 @@
-import type { GetDistinctClientsReturn } from "@features/sales/api.functions";
 import { CreditCard, HandCoins } from "lucide-react";
 import { useState } from "react";
 import { ClientAutocomplete } from "./ClientAutocomplete";
@@ -20,7 +19,6 @@ export interface SaleFormValues {
 
 interface SaleFormProps {
 	initialValues: SaleFormValues;
-	knownClients?: GetDistinctClientsReturn;
 	onSubmit: (values: SaleFormValues) => Promise<void>;
 	submitLabel: string;
 	cancelHref: string;

@@ -2,11 +2,11 @@ import { formatDatetimeLocal } from "@common/format/date";
 import { PageLayout } from "@components/layouts";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import type { FindSaleByIdReturn, GetDistinctClientsReturn } from "../api.functions";
+import type { FindSaleByIdReturn } from "../api.functions";
 import { updateSaleFn } from "../api.functions";
 import { SaleForm, type SaleFormValues } from "./components/SaleForm";
 
-export const SaleEditPage = ({ sale, knownClients }: { sale: FindSaleByIdReturn; knownClients?: GetDistinctClientsReturn }) => {
+export const SaleEditPage = ({ sale }: { sale: FindSaleByIdReturn }) => {
 	const navigate = useNavigate();
 	const [isPending, setIsPending] = useState(false);
 
@@ -43,7 +43,6 @@ export const SaleEditPage = ({ sale, knownClients }: { sale: FindSaleByIdReturn;
 		<PageLayout title="Modifier vente" withCancel={true}>
 			<SaleForm
 				initialValues={initialValues}
-				knownClients={knownClients}
 				onSubmit={handleSubmit}
 				submitLabel="Enregistrer"
 				cancelHref={`/sales/${sale.id}`}
