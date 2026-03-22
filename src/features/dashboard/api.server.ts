@@ -36,6 +36,7 @@ async function sumPurchases(from: Date, to: Date) {
 }
 
 async function getMonthSales(d: Date) {
+	const today = format(new Date(), "yyyy-MM-dd");
 	const start = startOfWeek(startOfMonth(d), { weekStartsOn: 1 });
 	const end = endOfWeek(endOfMonth(d), { weekStartsOn: 1 });
 
@@ -53,10 +54,11 @@ async function getMonthSales(d: Date) {
 		const dateStr = format(date, "yyyy-MM-dd");
 		const sale = result.find((r) => r.date === dateStr);
 		return {
+			isToday: dateStr === today,
 			date: dateStr,
 			day: format(date, "dd"),
-			count: sale?.count ?? 0,
-			inCurrentMonth: format(date, "MM") === format(d, "MM"),
+			saleCount: sale?.count ?? 0,
+			inSelectedMonth: format(date, "MM") === format(d, "MM"),
 		};
 	});
 }
