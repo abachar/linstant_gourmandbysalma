@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { addDays, addYears, endOfDay, endOfMonth, startOfDay, startOfMonth, subDays } from "date-fns";
-import { createSale, deleteSaleById, findSaleById, findSalesByRange, updateSale } from "./api.server";
+import { createSale, deleteSaleById, findSaleById, findSalesByRange, getDistinctClients, updateSale } from "./api.server";
 
 function validFilter(filter: string) {
 	return ["upcoming", "month", "past", "all"].includes(filter) ? filter : "upcoming";
@@ -23,6 +23,10 @@ function getSaleInterval(filter: string): [Date, Date] {
 	// all
 	return [minDate, maxDate];
 }
+
+export const getDistinctClientsFn = createServerFn({ method: "GET" }).handler(async () => getDistinctClients());
+
+export type GetDistinctClientsReturn = Awaited<ReturnType<typeof getDistinctClientsFn>>;
 
 export const findSalesByRangeFn = createServerFn({ method: "GET" })
 	.inputValidator((data: { filter: string }) => data)

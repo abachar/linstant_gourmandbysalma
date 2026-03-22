@@ -1,5 +1,6 @@
 import { CreditCard, HandCoins } from "lucide-react";
 import { useState } from "react";
+import { ClientAutocomplete } from "./ClientAutocomplete";
 import { PaymentMethodValue } from "./PaymentMethodValue";
 
 const PAYMENT_METHODS = ["Bank", "Cash"] as const;
@@ -29,6 +30,14 @@ export const SaleForm = (props: SaleFormProps) => {
 
 	function set(key: keyof SaleFormValues, value: string) {
 		setValues((prev) => ({ ...prev, [key]: value }));
+	}
+
+	function onClientSelect(clientName: string, deliveryAddress?: string) {
+		setValues((prev) => ({
+			...prev,
+			clientName,
+			deliveryAddress: deliveryAddress ?? prev.deliveryAddress,
+		}));
 	}
 
 	function onAmountChange(amountVal: string) {
@@ -62,19 +71,16 @@ export const SaleForm = (props: SaleFormProps) => {
 					Informations Client
 				</h3>
 				<div className="flex flex-col gap-4">
-					<label className="flex flex-col">
+					<div className="flex flex-col">
 						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Nom du client <span className="text-primary">*</span>
 						</p>
-						<input
-							type="text"
-							required
+						<ClientAutocomplete
 							value={values.clientName}
-							onChange={(e) => set("clientName", e.currentTarget.value)}
-							placeholder="Ex: Marie Lefebvre"
-							className="form-input w-full rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-200 dark:border-[#67323b] bg-white dark:bg-surface-dark h-14 placeholder:text-slate-400 dark:placeholder:text-[#c9929b] px-4 text-base font-normal"
+							onChange={onClientSelect}
+							knownClients={props.knownClients}
 						/>
-					</label>
+					</div>
 					<label className="flex flex-col">
 						<p className="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal pb-2">
 							Adresse de livraison
@@ -229,7 +235,7 @@ export const SaleForm = (props: SaleFormProps) => {
 				</div>
 			</div>
 
-			{/* Fixed Footer */}
+			{/* Footer */}
 			<div className="flex gap-3 pt-4">
 				<a
 					href={props.cancelHref}
