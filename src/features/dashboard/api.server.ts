@@ -43,7 +43,7 @@ async function getMonthSales(d: Date) {
 	const result = await db
 		.select({
 			date: sql<string>`to_char(${sales.deliveryDatetime}, 'YYYY-MM-DD')`,
-			count: sql<number>`count(*)`,
+			salesIds: sql<string[]>`json_agg(${sales.id})`,
 		})
 		.from(sales)
 		.where(between(sales.deliveryDatetime, start, end))
@@ -52,13 +52,13 @@ async function getMonthSales(d: Date) {
 
 	return eachDayOfInterval({ start, end }).map((date) => {
 		const dateStr = format(date, "yyyy-MM-dd");
-		const sale = result.find((r) => r.date === dateStr);
+		const saleData = result.find((r) => r.date === dateStr);
 		return {
 			isToday: dateStr === today,
+			inSelectedMonth: format(date, "MM") === format(d, "MM"),
 			date: dateStr,
 			day: format(date, "dd"),
-			saleCount: sale?.count ?? 0,
-			inSelectedMonth: format(date, "MM") === format(d, "MM"),
+			saleIds: saleData?.salesIds ?? [],
 		};
 	});
 }
