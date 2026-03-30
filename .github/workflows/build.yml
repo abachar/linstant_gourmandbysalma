@@ -6,9 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  IMAGE_NAME: linstant-gourmand
+  REGISTRY: ghcr.io
+
 jobs:
-  lint-and-build:
-    name: Lint & Build
+  lint-and-test:
+    name: Lint & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -30,5 +34,51 @@ jobs:
       - name: Tests
         run: pnpm test
 
-      - name: Build
-        run: pnpm run build
+  build-and-deploy:
+    name: Build & Deploy Docker Image
+    needs: lint-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Notify deploy API
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          IMAGE="${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}"
+          VERSION="${GITHUB_SHA::7}"
+          curl -fsSL "https://harbor.crafters.dev/application.deploy?token=${DEPLOY_TOKEN}&app=${{ env.IMAGE_NAME }}&image=${IMAGE}&version=${VERSION}"
